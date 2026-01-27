@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forbiddenFunctions xmlns="https://getpsalm.org/schema/config">
+    <function name="dd"/>
+    <function name="dump"/>
+    <function name="var_dump"/>
+    <function name="var_export"/>
+    <function name="print_r"/>
+</forbiddenFunctions>

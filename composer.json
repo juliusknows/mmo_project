@@ -15,6 +15,10 @@
         "symfony/yaml": "7.4.*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.93",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "vimeo/psalm": "^6.14"
     },
     "config": {
         "allow-plugins": {
@@ -55,6 +59,24 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpcsfix": [
+            "php-cs-fixer fix"
+        ],
+        "phpstan": [
+            "console cache:warmup",
+            "phpstan clear-result-cache",
+            "phpstan analyse"
+        ],
+        "psalm": [
+            "console cache:warmup",
+            "./vendor/bin/psalm --no-cache"
+        ],
+        "check": [
+            "console cache:warmup",
+            "composer phpcsfix",
+            "composer phpstan",
+            "composer psalm"
         ]
     },
     "conflict": {

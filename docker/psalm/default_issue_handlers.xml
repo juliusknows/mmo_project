@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issueHandlers xmlns="https://getpsalm.org/schema/config">
+    <TooManyArguments>
+        <errorLevel type="suppress">
+            <referencedFunction name="Doctrine\ORM\Query\Expr::orx"/>
+            <referencedFunction name="Doctrine\ORM\Query\Expr::andx"/>
+            <referencedFunction name="Doctrine\DBAL\Query\QueryBuilder::select"/>
+            <referencedFunction name="Doctrine\DBAL\Query\QueryBuilder::addSelect"/>
+        </errorLevel>
+    </TooManyArguments>
+</issueHandlers>

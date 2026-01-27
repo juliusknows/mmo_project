@@ -1,0 +1,5 @@
+includes:
+    - docker/phpstan/phpstan.base.neon
+
+parameters:
+    paths: [src]
