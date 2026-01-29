@@ -7,21 +7,24 @@ export $(shell sed 's/=.*//' .env.local)
 
 DOCKER_COMPOSE?=docker compose
 
-DOCKER_COMPOSE_CONFIG := -f docker-compose.$(APP_ENV).yml
+DOCKER_COMPOSE_CONFIG := -f docker-compose.yml -f docker-compose.$(APP_ENV).yml
 
 stop: ## Остановить контейнеры
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) stop
 
+down: ## Уронить контейнеры (удалить)
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) down
+
 up: ## Поднять контейнеры
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --remove-orphans
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --build --remove-orphans
 
 up+: ## Поднять контейнеры с консолью
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up --remove-orphans
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up ---build -remove-orphans
 
 armageddon: ## Удалит все неиспользованное
 	docker system prune -a -f
 
-clean: ## Удалить кэш
+docker-clean: ## Удалить кэш сборок builder
 	docker builder prune -f
 
 in-app: ## Войти в контейнер с приложением
@@ -45,5 +48,8 @@ test: ## Проверить коммит перед отправкой
 help: ## Вывод доступных команд
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n"} /^[$$()% a-zA-Z_-]+:.*?##/ { printf "  \033[32m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-check: ## Проверить коммит перед отправкой
+check-code: ## Проверить коммит перед отправкой
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec -T app composer check
+
+cache-clear: ## Очистка кэша проекта
+	bin/console cache:clear
