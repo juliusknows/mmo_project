@@ -45,3 +45,5 @@ test: ## Проверить коммит перед отправкой
 help: ## Вывод доступных команд
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n"} /^[$$()% a-zA-Z_-]+:.*?##/ { printf "  \033[32m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
+check: ## Проверить коммит перед отправкой
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec -T app composer check
