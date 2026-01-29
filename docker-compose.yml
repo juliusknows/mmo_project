@@ -1,0 +1,22 @@
+services:
+
+    nginx:
+        image: nginx:alpine
+        container_name: nginx-mmo
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - public-volume:/var/www/public
+        ports:
+            - "80:80"
+        networks:
+            - network
+        depends_on:
+            - app
+
+networks:
+    network:
+        driver: bridge
+
+volumes:
+    public-volume:
+        name: mmo_public
