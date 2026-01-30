@@ -9,3 +9,8 @@
 
 controllers:
     resource: routing.controllers
+
+Registration:
+    path: /
+    controller: App\Controller\RegistrationController::index
+    methods: ['POST', 'GET']
