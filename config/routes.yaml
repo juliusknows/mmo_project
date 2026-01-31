@@ -10,7 +10,12 @@
 controllers:
     resource: routing.controllers
 
-Registration:
+homepage:
     path: /
-    controller: App\Controller\RegistrationController::index
-    methods: ['POST', 'GET']
+    controller: App\Controller\MainController::index
+    methods: ['GET']
+
+registration:
+    path: /registration
+    controller: App\Controller\MainController::registration
+    methods: ['POST']
