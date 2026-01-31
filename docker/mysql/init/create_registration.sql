@@ -9,12 +9,12 @@ USE mmo_db;
 SELECT 'Шаг 3: Создание таблицы' AS Status;
 CREATE TABLE IF NOT EXISTS registration (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    email VARCHAR(254) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
+    user_name VARCHAR(100) UNIQUE NOT NULL,
+    user_email VARCHAR(254) UNIQUE NOT NULL,
+    user_password_hash VARCHAR(255) NOT NULL
     );
 
-INSERT IGNORE INTO registration (name, email, password_hash)
+INSERT IGNORE INTO registration (user_name, user_email, user_password_hash)
 VALUES ('Test', 'test@example.com', 'хеш_пароля_test');
 
 SELECT 'Скрипт выполнен успешно!' AS Status;
