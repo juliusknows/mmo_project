@@ -18,8 +18,8 @@ down: ## Уронить контейнеры (удалить)
 up: ## Поднять контейнеры
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --remove-orphans
 
-up+: ## Поднять контейнеры с принудительной перезборкой
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --build -remove-orphans
+upp: ## Поднять контейнеры с принудительной пересборкой
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --build --remove-orphans
 
 armageddon: ## Удалит все неиспользованное
 	docker system prune -a -f
