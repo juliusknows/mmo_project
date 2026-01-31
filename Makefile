@@ -16,10 +16,10 @@ down: ## Уронить контейнеры (удалить)
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) down
 
 up: ## Поднять контейнеры
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --build --remove-orphans
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --remove-orphans
 
-up+: ## Поднять контейнеры с консолью
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up ---build -remove-orphans
+up+: ## Поднять контейнеры с принудительной перезборкой
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) up -d --build -remove-orphans
 
 armageddon: ## Удалит все неиспользованное
 	docker system prune -a -f
@@ -32,6 +32,12 @@ in-app: ## Войти в контейнер с приложением
 
 in-nginx: ## Войти в контейнер nginx
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec nginx sh
+
+in-sql: ## Обратиться напрямую к БД
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec mysql bash
+
+sql: ## Обратиться напрямую к БД
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec -it mysql mysql -u root -p
 
 stan: ## Статический анализ кода - phpstan
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec -T app composer phpstan
