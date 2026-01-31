@@ -27,4 +27,6 @@ services:
             - ./docker/psalm:/var/www/docker/psalm
         networks:
             - network
+        depends_on:
+            -   mysql
 
