@@ -5,7 +5,7 @@ services:
         container_name: nginx-mmo
         volumes:
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - public-volume:/var/www/public
+            - ./public:/var/www/public
         ports:
             - "80:80"
         networks:
