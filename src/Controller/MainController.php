@@ -74,12 +74,14 @@ final class MainController
             $errorMessage = $e->getMessage();
 
             $errorType = '';
+
             if ('23000' === $errorCode) {
                 if (str_contains($errorMessage, 'user_email')) {
                     $errorType = 'The email already exists!';
                 } elseif (str_contains($errorMessage, 'user_name')) {
                     $errorType = 'The username already exists!';
                 }
+
                 return new Response($errorType, 409);
             }
 
