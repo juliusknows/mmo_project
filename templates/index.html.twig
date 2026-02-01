@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        /* Сброс стандартных отступов и полей всех элементов
+   Чтобы избежать «сюрпризов» с разными браузерами */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Включаем модель расчёта ширины: ширина = контент + padding + border */
+        }
+
+        /* Стили для тега <body> — основного контейнера страницы */
+        body {
+            font-family: Arial, sans-serif; /* Шрифт текста по умолчанию */
+            background-color: #23BCFF;     /* Светлый серый фон страницы */
+            display: flex;                 /* Включаем Flexbox-модель для расположения дочерних элементов */
+            justify-content: center;       /* Горизонтальное центрирование содержимого внутри body */
+            align-items: center;           /* Вертикальное центрирование содержимого внутри body */
+            min-height: 100vh;           /* Минимальная высота body = 100% высоты окна браузера (vh) */
+            padding: 20px;                 /* Отступы по 20px со всех сторон вокруг содержимого */
+        }
+
+        /* Контейнер с формой — основной блок, который видим на экране */
+        .container {
+            width: 100%;                 /* Ширина блока = 100% от родительского контейнера */
+            max-width: 400px;          /* Максимальная ширина блока — 400px (не шире на больших экранах) */
+            background-color: white;     /* Белый фон блока */
+            border-radius: 20px;        /* Скругление углов блока на 8px */
+            box-shadow: -15px 15px 10px rgba(0, 0, 0, 0.1); /* Тень: смещение вниз и право на 15px, размытие 10px, полупрозрачный чёрный */
+            padding: 30px 20px;         /* Внутренние отступы: сверху/снизу 30px, слева/справа 20px */
+            text-align: center;          /* Выравнивание текста внутри блока по центру (заголовки, кнопка) */
+        }
+
+        /* Заголовок формы (<h1>) */
+        h1 {
+            margin-bottom: 20px;         /* Отступ снизу 20px (расстояние до следующего элемента) */
+            color: royalblue;               /* royalblue цвет текста */
+        }
+
+        /* Группа поля формы (обёртка для label + input) */
+        .form-group {
+            margin-bottom: 20px;       /* Отступ снизу 15px между группами полей */
+            text-align: left;          /* Выравнивание текста внутри группы по левому краю (для читаемости) */
+        }
+
+        /* Метка поля (<label>) */
+        label {
+            display: block;              /* Делаем label блочным элементом (занимает всю ширину) */
+            margin-bottom: 5px;        /* Отступ снизу 5px (расстояние до input) */
+            color: #555;               /* Серый цвет текста метки */
+        }
+
+        /* Поля ввода: текст, email, пароль */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;               /* Поле занимает 100% ширины родительского контейнера */
+            padding: 10px;            /* Внутренние отступы 10px со всех сторон */
+            border: 1px solid #ddd;   /* Тонкая серая рамка (1px, цвет #ddd) */
+            border-radius: 6px;       /* Скругление углов рамки на 6px */
+            font-size: 14px;          /* Размер шрифта текста внутри поля */
+        }
+
+        /* Кнопка «Зарегистрироваться» */
+        #submit-btn {
+            background-color: #007bff; /* Синий фон кнопки */
+            color: white;              /* Белый цвет текста */
+            border: 1px solid #ddd;              /* Рамка кнопки */
+            padding: 12px 20px;      /* Внутренние отступы: сверху/снизу 12px, слева/справа 20px */
+            border-radius: 6px;       /* Скругление углов кнопки на 4px */
+            cursor: pointer;            /* Курсор-указатель при наведении (как у ссылок) */
+            font-size: 16px;          /* Размер шрифта текста на кнопке */
+            width: 100%;              /* Кнопка занимает 100% ширины контейнера */
+            margin-top: 10px;         /* Отступ сверху 10px (расстояние от предыдущего элемента) */
+        }
+
+        /* Эффект при наведении на кнопку */
+        #submit-btn:hover {
+            background-color: #0056b3; /* Более тёмный синий фон при наведении */
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1>Регистрация</h1>
+
+        <form method="POST" action="{{ path('registration') }}" id="registration-form">
+            <!-- Группа поля «Имя пользователя» -->
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
+            </div>
+
+            <!-- Группа поля «Email» -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+            </div>
+
+            <!-- Группа поля «Пароль» -->
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" placeholder="Минимум 8 символов" required>
+            </div>
+
+            <!-- Группа поля «Подтвердите пароль» -->
+            <div class="form-group">
+                <label for="confirm-password">Подтвердите пароль:</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Повторите пароль" required>
+            </div>
+
+            <!-- Кнопка отправки формы -->
+            <button type="submit" id="submit-btn">Зарегистрироваться</button>
+        </form>
+    </main>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const submitBtn = document.getElementById('submit-btn');
+            const form = document.getElementById('registration-form');
+
+            // Функция проверки совпадения паролей
+            function validatePasswords() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (password !== confirmPassword) {
+                    // Если пароли не совпадают
+                    confirmPasswordInput.style.borderColor = 'red';
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.6';
+                    return false;
+                } else {
+                    // Если совпадают
+                    confirmPasswordInput.style.borderColor = '#ddd';
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    return true;
+                }
+            }
+
+            // Проверяем при вводе в поле подтверждения
+            confirmPasswordInput.addEventListener('input', validatePasswords);
+
+            // Проверяем при отправке формы (на случай, если JS изменил значения)
+            form.addEventListener('submit', function(event) {
+                if (!validatePasswords()) {
+                    event.preventDefault(); // Блокируем отправку
+                    alert('Пароли не совпадают!');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+
