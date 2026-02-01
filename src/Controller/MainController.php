@@ -30,7 +30,7 @@ final class MainController
      */
     public function index(): Response
     {
-        $content = $this->twig->render('base.html.twig');
+        $content = $this->twig->render('index.html.twig');
 
         return new Response($content);
     }
@@ -68,17 +68,19 @@ final class MainController
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$name, $email, $passwordHash]);
 
-            return new Response('The user is registered!', 200);
+            return new Response('Ok! The user is registered!', 200);
         } catch (PDOException $e) {
             $errorCode = $e->getCode();
             $errorMessage = $e->getMessage();
 
+            $errorType = '';
             if ('23000' === $errorCode) {
                 if (str_contains($errorMessage, 'user_email')) {
-                    return new Response('The email already exists!', 409);
+                    $errorType = 'The email already exists!';
                 } elseif (str_contains($errorMessage, 'user_name')) {
-                    return new Response('The username already exists!', 409);
+                    $errorType = 'The username already exists!';
                 }
+                return new Response($errorType, 409);
             }
 
             return new Response('DB error: ' . $errorMessage, 500);
