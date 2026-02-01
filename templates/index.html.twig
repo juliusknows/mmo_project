@@ -12,8 +12,14 @@
 
         /* Стили для тега <body> — основного контейнера страницы */
         body {
+            background-image: url('/images/more_gorizont_nebo_2560x1440.jpg');  /* Путь от public/ */
+            background-size: cover;           /* Заполняет весь экран без искажений */
+            background-repeat: no-repeat;     /* Не повторять изображение */
+            background-position: center;       /* Центрировать картинку */
+            background-attachment: fixed;     /* Фиксировать при прокрутке */
+            /*background-color: #23BCFF;     !* Светлый серый фон страницы *!*/
+
             font-family: Arial, sans-serif; /* Шрифт текста по умолчанию */
-            background-color: #23BCFF;     /* Светлый серый фон страницы */
             display: flex;                 /* Включаем Flexbox-модель для расположения дочерних элементов */
             justify-content: center;       /* Горизонтальное центрирование содержимого внутри body */
             align-items: center;           /* Вертикальное центрирование содержимого внутри body */
