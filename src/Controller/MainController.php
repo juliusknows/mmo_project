@@ -17,16 +17,12 @@ use function strlen;
 use const FILTER_VALIDATE_EMAIL;
 use const PASSWORD_DEFAULT;
 
-final class MainController
+final readonly class MainController
 {
-    private Environment $twig;
-
-    private LoggerInterface $logger;
-
-    public function __construct(Environment $twig, LoggerInterface $logger)
-    {
-        $this->twig = $twig;
-        $this->logger = $logger;
+    public function __construct(
+        private Environment $twig,
+        private LoggerInterface $logger
+    ) {
     }
 
     /**
@@ -60,7 +56,8 @@ final class MainController
         try {
             $pdo = new PDO($dsn, $user, $pass, $options);
         } catch (PDOException $e) {
-            return new Response('Connection error: ' . $e->getMessage(), 500);
+            $this->logger->error('Ошибка подключения PDO: ' . __FILE__ . $e->getMessage() . ' Code: ' . $e->getCode());
+            return new Response('Регистрация временно недоступна!', 500);
         }
 
         $name = (string) $request->request->get('username', '');
