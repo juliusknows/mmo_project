@@ -6,6 +6,7 @@ services:
             target: dev
         container_name: app-mmo
         volumes:
+            - ./var/log:/var/www/var/log
             - ./public:/var/www/public
             - ./.env:/var/www/.env
             - ./.env.local:/var/www/.env.local
