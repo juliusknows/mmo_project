@@ -9,8 +9,8 @@ USE mmo_db;
 SELECT 'Шаг 3: Создание таблицы' AS Status;
 CREATE TABLE IF NOT EXISTS registration (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name VARCHAR(100) UNIQUE NOT NULL,
-    user_email VARCHAR(254) UNIQUE NOT NULL,
+    user_name VARCHAR(20) NOT NULL,
+    user_email VARCHAR(60) UNIQUE NOT NULL,
     user_password_hash VARCHAR(255) NOT NULL
     );
 
