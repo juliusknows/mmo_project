@@ -24,7 +24,7 @@ upp: ## Поднять контейнеры с принудительной пе
 armageddon: ## Удалит все неиспользованное
 	docker system prune -a -f
 
-docker-clean: ## Удалить кэш сборок builder
+docker:clean: ## Удалить кэш сборок builder
 	docker builder prune -f
 
 in-app: ## Войти в контейнер с приложением
@@ -54,8 +54,8 @@ test: ## Проверить коммит перед отправкой
 help: ## Вывод доступных команд
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n"} /^[$$()% a-zA-Z_-]+:.*?##/ { printf "  \033[32m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-check-code: ## Проверить коммит перед отправкой
+check:code: ## Проверить коммит перед отправкой
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec -T app composer check
 
-cache-clear: ## Очистка кэша проекта
+cache:clear: ## Очистка кэша проекта
 	bin/console cache:clear
