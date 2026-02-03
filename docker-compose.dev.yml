@@ -6,22 +6,23 @@ services:
             target: dev
         container_name: app-mmo
         volumes:
-            - ./var/log:/var/www/var/log
+            - ./assets:/var/www/assets
+            - ./bin:/var/www/bin
+            - ./config:/var/www/config
+            - ./migrations:/var/www/migrations
             - ./public:/var/www/public
+            - ./src:/var/www/src
+            - ./templates:/var/www/templates
+            - ./tests:/var/www/tests
+            - ./var/log:/var/www/var/log
+            - ./vendor:/var/www/vendor
             - ./.env:/var/www/.env
             - ./.env.local:/var/www/.env.local
             - ./.env.test:/var/www/.env.test
+            - ./.php-cs-fixer.dist.php:/var/www/.php-cs-fixer.dist.php
             - ./composer.json:/var/www/composer.json
             - ./composer.lock:/var/www/composer.lock
             - ./symfony.lock:/var/www/symfony.lock
-            - ./vendor:/var/www/vendor
-            - ./bin:/var/www/bin
-            - ./config:/var/www/config
-            - ./src:/var/www/src
-            - ./tests:/var/www/tests
-            - ./templates:/var/www/templates
-            - ./migrations:/var/www/migrations
-            - ./.php-cs-fixer.dist.php:/var/www/.php-cs-fixer.dist.php
             - ./phpstan.neon.dist:/var/www/phpstan.neon.dist
             - ./psalm.xml:/var/www/psalm.xml
             - ./docker/phpstan:/var/www/docker/phpstan
