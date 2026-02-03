@@ -12,13 +12,13 @@ controllers:
 
 homepage:
     path: /
-    controller: App\Controller\MainController::index
+    controller: App\Controller\MainController::indexAction
     methods:
         - GET
 
 registration:
     path: /registration
-    controller: App\Controller\MainController::registration
+    controller: App\Controller\MainController::registrationAction
     methods:
         - GET
         - POST
