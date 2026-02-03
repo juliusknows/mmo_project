@@ -1,20 +1,20 @@
-SELECT 'Шаг 1: Создание базы данных' AS Status;
-CREATE DATABASE IF NOT EXISTS mmo_db
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
-SELECT 'Шаг 2: Переключение на базу' AS Status;
-USE mmo_db;
-
-SELECT 'Шаг 3: Создание таблицы' AS Status;
-CREATE TABLE IF NOT EXISTS registration (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name VARCHAR(20) NOT NULL,
-    user_email VARCHAR(60) UNIQUE NOT NULL,
-    user_password_hash VARCHAR(255) NOT NULL
-    );
-
-INSERT IGNORE INTO registration (user_name, user_email, user_password_hash)
-VALUES ('Test', 'test@example.com', 'хеш_пароля_test');
-
-SELECT 'Скрипт выполнен успешно!' AS Status;
+-- SELECT 'Шаг 1: Создание базы данных' AS Status;
+-- CREATE DATABASE IF NOT EXISTS mmo_db
+-- CHARACTER SET utf8mb4
+-- COLLATE utf8mb4_unicode_ci;
+--
+-- SELECT 'Шаг 2: Переключение на базу' AS Status;
+-- USE mmo_db;
+--
+-- SELECT 'Шаг 3: Создание таблицы' AS Status;
+-- CREATE TABLE IF NOT EXISTS registration (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     user_name VARCHAR(20) NOT NULL,
+--     user_email VARCHAR(60) UNIQUE NOT NULL,
+--     user_password_hash VARCHAR(255) NOT NULL
+--     );
+--
+-- INSERT IGNORE INTO registration (user_name, user_email, user_password_hash)
+-- VALUES ('Test', 'test@example.com', 'хеш_пароля_test');
+--
+-- SELECT 'Скрипт выполнен успешно!' AS Status;
