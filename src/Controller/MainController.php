@@ -4,28 +4,37 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\UserRegistrationDto;
+use App\Entity\User;
 use App\Form\UserRegistrationType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class MainController extends AbstractController
 {
-    public function index(): Response
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        return new Response('Тут пока пусто');
+        $this->entityManager = $entityManager;
     }
 
-    public function registration(Request $request): Response
+    public function indexAction(): Response
     {
-        $dto = new UserRegistrationDto();
-        $form = $this->createForm(UserRegistrationType::class, $dto);
+        return new Response('Куку');
+    }
+
+    public function registrationAction(Request $request): Response
+    {
+        $user = new User();
+        $form = $this->createForm(UserRegistrationType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Регистрация успешна!');
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('registration');
         }
