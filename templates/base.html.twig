@@ -2,14 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Ты на базовом twig!{% endblock %}</title>
-
-    {% block stylesheets %}<--Заглушка стиля-->{% endblock %}
-
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-{% block body %}<--Заглушка тела-->{% endblock %}
-
-{% block javascripts %}<--Заглушка js-->{% endblock %}
+    {% block body %}{% endblock %}
 </body>
 </html>

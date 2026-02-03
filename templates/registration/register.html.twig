@@ -2,145 +2,49 @@
 
 {% block title %}Регистрация{% endblock %}
 
-{% block stylesheets %}
-    <style>
-        /* Общий фон страницы */
-        body {
-            background-color: #e3f2fd; /* Светло‑синий фон */
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        /* Контейнер для формы */
-        .form-container {
-            max-width: 500px; /* Максимальная ширина формы */
-            margin: 40px auto; /* Центрируем и добавляем отступы сверху/снизу */
-            padding: 30px; /* Внутренний отступ внутри бокса */
-            background-color: white; /* Белый фон формы */
-            border-radius: 10px; /* Скруглённые углы */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
-        }
-
-        /* Заголовок формы */
-        h1 {
-            text-align: center; /* Выравнивание по центру */
-            color: #1976d2; /* Тёмно‑синий цвет заголовка */
-            margin-bottom: 30px;
-        }
-
-        /* Стилизация полей формы */
-        .form-field {
-            margin-bottom: 20px; /* Отступ между полями */
-        }
-
-        /* Метка поля (label) */
-        label {
-            display: block; /* Блок для вертикального расположения */
-            margin-bottom: 5px; /* Отступ снизу от метки до поля */
-            color: #333; /* Тёмный цвет текста */
-            font-weight: bold;
-        }
-
-        /* Текстовое поле (input) */
-        input[type="email"],
-        input[type="password"] {
-            width: 100%; /* Занимает всю ширину контейнера */
-            padding: 12px; /* Внутренний отступ */
-            border: 2px solid #bbdefb; /* Светло‑синяя граница */
-            border-radius: 6px; /* Скруглённые углы */
-            font-size: 16px; /* Размер текста */
-            transition: border-color 0.3s; /* Плавный переход цвета границы */
-        }
-
-        /* Эффект при фокусе на поле */
-        input:focus {
-            outline: none; /* Убираем стандартный контур */
-            border-color: #1976d2; /* Меняем цвет границы при фокусе */
-        }
-
-        /* Сообщения об ошибках */
-        .form-error {
-            color: #d32f2f; /* Красный цвет для ошибок */
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        /* Кнопка отправки */
-        button {
-            width: 100%; /* На всю ширину */
-            padding: 14px;
-            background-color: #1976d2; /* Синий фон кнопки */
-            color: white; /* Белый текст */
-            border: none; /* Нет границы */
-            border-radius: 6px; /* Скруглённые углы */
-            font-size: 16px;
-            cursor: pointer; /* Курсор-указатель */
-            transition: background-color 0.3s;
-        }
-
-        /* Эффект при наведении на кнопку */
-        button:hover {
-            background-color: #0d47a1; /* Более тёмный синий при наведении */
-        }
-
-        /* Стилевое оформление сообщений об успехе */
-        .alert-success {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #dff0d8; /* Светло‑зелёный фон */
-            color: #3c763d; /* Тёмно‑зелёный текст */
-            border-radius: 6px;
-            text-align: center;
-        }
-    </style>
-{% endblock %}
-
 {% block body %}
-    <div class="form-container"> <!-- Контейнер с отступами и тенью -->
+    <div class="registration-form">
         <h1>Регистрация</h1>
 
         {{ form_start(form) }}
 
-        <div class="form-field"> <!-- Блок для поля email -->
-            {{ form_label(form.email) }}
-            {{ form_widget(form.email, {'attr': {'class': 'form-control'}} ) }}
-            {% if form_errors(form.email) %}
-                <div class="form-error">
-                    {{ form_errors(form.email) }}
-                </div>
-            {% endif %}
+        <div class="form-group">
+            {{ form_label(form.email, 'Email') }}
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Введите email'
+                }
+            }) }}
+            {{ form_errors(form.email) }}
         </div>
 
-        <div class="form-field"> <!-- Блок для поля password -->
-            {{ form_label(form.password) }}
-            {{ form_widget(form.password, {'attr': {'class': 'form-control'}} ) }}
-            {% if form_errors(form.password) %}
-                <div class="form-error">
-                    {{ form_errors(form.password) }}
-                </div>
-            {% endif %}
+        <div class="form-group">
+            {{ form_label(form.password, 'Пароль') }}
+            {{ form_widget(form.password, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Введите пароль'
+                }
+            }) }}
+            {{ form_errors(form.password) }}
         </div>
 
-        <div class="form-field"> <!-- Блок для поля passwordRepeat -->
-            {{ form_label(form.passwordRepeat) }}
-            {{ form_widget(form.passwordRepeat, {'attr': {'class': 'form-control'}} ) }}
-            {% if form_errors(form.passwordRepeat) %}
-                <div class="form-error">
-                    {{ form_errors(form.passwordRepeat) }}
-                </div>
-            {% endif %}
+        <div class="form-group">
+            {{ form_label(form.passwordRepeat, 'Подтверждение пароля') }}
+            {{ form_widget(form.passwordRepeat, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Повторите пароль'
+                }
+            }) }}
+            {{ form_errors(form.passwordRepeat) }}
         </div>
 
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit" class="btn btn-primary">
+            Зарегистрироваться
+        </button>
 
         {{ form_end(form) }}
-    </div> <!-- /form-container -->
-
-    <!-- Сообщение об успехе (если есть) -->
-    {% if app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ app.flashes('success')[0] }}
-        </div>
-    {% endif %}
+    </div>
 {% endblock %}
