@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Dto\UserRegistrationDto;
+use App\Entity\User;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -38,7 +38,7 @@ final class UserRegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => UserRegistrationDto::class,
+            'data_class' => User::class,
         ]);
     }
 }
