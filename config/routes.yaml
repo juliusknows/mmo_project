@@ -13,12 +13,14 @@ controllers:
 homepage:
     path: /
     controller: App\Controller\MainController::indexAction
-    methods:
-        - GET
+    methods: ['GET']
 
 registration:
     path: /registration
     controller: App\Controller\MainController::registrationAction
-    methods:
-        - GET
-        - POST
+    methods: ['GET', 'POST']
+
+check_email:
+    path: /check-email
+    controller: App\Controller\MainController::checkEmail
+    methods: ['POST']
