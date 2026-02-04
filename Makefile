@@ -33,7 +33,7 @@ in-app: ## Войти в контейнер с приложением
 in-nginx: ## Войти в контейнер nginx
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec nginx sh
 
-in-sql: ## Обратиться напрямую к БД
+in-sql: ## Войти в контейнер Mysql
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_CONFIG) exec mysql bash
 
 sql: ## Обратиться напрямую к БД
