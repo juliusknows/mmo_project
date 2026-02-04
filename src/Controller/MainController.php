@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\UserRegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,6 +42,20 @@ final class MainController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function checkEmail(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $email = $data['email'] ?? '';
+
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
+
+        return new JsonResponse([
+            'exists' => null !== $user,
+            'message' => null !== $user ? 'Этот email уже занят' : 'Email доступен',
         ]);
     }
 }
