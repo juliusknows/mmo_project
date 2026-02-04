@@ -13,10 +13,13 @@
             {{ form_widget(form.email, {
                 'attr': {
                     'class': 'form-control',
-                    'placeholder': 'Введите email'
+                    'placeholder': 'Введите email',
+                    'id': 'user_registration_email',
+                    'autocomplete': 'email'
                 }
             }) }}
             {{ form_errors(form.email) }}
+            <div id="user_email_status" class="form-text mt-1"></div>
         </div>
 
         <div class="form-group">
@@ -47,4 +50,72 @@
 
         {{ form_end(form) }}
     </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const emailInput = document.getElementById('user_registration_email');
+            const emailStatus = document.getElementById('user_email_status');
+
+            if (!emailInput) {
+                console.error('Элемент #user_registration_email не найден!');
+                return;
+            }
+            if (!emailStatus) {
+                console.error('Элемент #user_email_status не найден!');
+                return;
+            }
+
+            async function checkEmailAvailability(email) {
+                try {
+                    const response = await fetch('/check-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: email })
+                    });
+
+                    if (!response.ok) {
+                        console.error('Ошибка проверки email:', response.status);
+                        return true
+                    }
+
+                    const data = await response.json();
+                    return data.exists;
+                } catch (error) {
+                    console.error('Ошибка проверки email:', error);
+                    return true;
+                }
+            }
+
+            let timeoutId;
+
+            emailInput.addEventListener('input', (e) => {
+
+                const email = e.target.value.trim();
+
+                emailStatus.textContent = '';
+
+                if (email && email.includes('@')) {
+
+                    clearTimeout(timeoutId);
+
+                    timeoutId = setTimeout(async () => {
+
+                        const isTaken = await checkEmailAvailability(email);
+
+                        if (isTaken) {
+                            emailStatus.textContent = '✗ Этот email уже занят';
+                            emailStatus.style.color = 'red';
+                        } else {
+                            emailStatus.textContent = '✓ Email доступен';
+                            emailStatus.style.color = 'green';
+                        }
+                    }, 500);
+                }
+            });
+        });
+    </script>
 {% endblock %}
