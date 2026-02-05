@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validation;
 
 final class MainController extends AbstractController
 {
@@ -40,7 +42,7 @@ final class MainController extends AbstractController
             return $this->redirectToRoute('registration');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/registration.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -49,6 +51,19 @@ final class MainController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $email = $data['email'] ?? '';
+
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($email, [
+            new Assert\Email(),
+            new Assert\NotBlank(),
+        ]);
+
+        if ($violations->count() > 0) {
+            return new JsonResponse([
+                'error' => 'Некорректный email',
+                'massage' => 'Валидация не пройдена',
+            ]);
+        }
 
         $user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $email]);
