@@ -23,14 +23,26 @@ final class UserRegistrationType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'example@example.com',
+                ],
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Пароль',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Введите пароль',
+                ],
             ])
             ->add('passwordRepeat', PasswordType::class, [
                 'label' => 'Подтверждение пароля',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Повторите пароль',
+                ],
             ]);
     }
 
