@@ -3,14 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('user_registration_email');
     const emailStatus = document.getElementById('user_email_status');
 
-    if (!emailInput) {
-        console.error('Элемент #user_registration_email не найден!');
-        return;
-    }
-    if (!emailStatus) {
-        console.error('Элемент #user_email_status не найден!');
-        return;
-    }
 
     async function checkEmailAvailability(email) {
         try {
@@ -24,15 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!response.ok) {
                 console.error('Ошибка проверки email:', response.status);
-                return true
+                return {
+                    success: false,
+                    error: `Сервер вернул ошибку 400-500!`,
+                };
             }
 
-            const data = await response.json();
-
-            return { success: true, ...data };
+            return await response.json();
         } catch (error) {
             console.error('Ошибка проверки email:', error);
-            return true;
+            return {
+                success: false,
+                error: 'Не удалось проверить Email! Непредвиденная ошибка!'
+            }
         }
     }
 
@@ -52,17 +48,71 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const isTaken = await checkEmailAvailability(email);
 
-                if (isTaken.error) {
-                    emailStatus.textContent = isTaken.error;
+                if (isTaken.success === false) {
+                    emailStatus.textContent = isTaken.message;
                     emailStatus.style.color = 'grey';
-                } else if (isTaken.exists) {
-                    emailStatus.textContent = 'Этот Email занят!';
+                } else if (isTaken.data) {
+                    emailStatus.textContent = isTaken.message;
                     emailStatus.style.color = 'red';
                 } else {
-                    emailStatus.textContent = 'Email свободен!';
+                    emailStatus.textContent = isTaken.message;
                     emailStatus.style.color = 'green';
                 }
             }, 500);
         }
     });
+
+    const passwordInput = document.getElementById('user_registration_password');
+    const passwordStatus = document.getElementById('user_password_status');
+
+
+    async function checkPasswordStrength(password) {
+        try {
+            const response = await fetch('/check-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: password })
+            });
+
+            if (!response.ok) {
+                console.error('Ошибка проверки пароля:', response.status);
+                return {
+                    success: false,
+                    error: `Сервер вернул статус с ошибкой!`,
+                }
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Ошибка проверки пароля:', error);
+            return {
+                success: false,
+                error: 'Произошла ошибка при проверке пароля.' };
+        }
+    }
+
+    passwordInput.addEventListener('input', (e) => {
+        const password = e.target.value.trim();
+        passwordStatus.textContent = '';
+
+        if (password.length > 0) {
+            clearTimeout(timeoutId);
+
+            timeoutId = setTimeout(async () => {
+                const result = await checkPasswordStrength(password);
+
+                if (result.error) {
+                    passwordStatus.textContent = result.message;
+                    passwordStatus.style.color = 'red';
+                } else {
+                    passwordStatus.textContent = result.message;
+                    passwordStatus.style.color = 'green';
+                }
+            }, 500);
+        }
+    });
 });
+
+
