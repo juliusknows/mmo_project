@@ -21,21 +21,18 @@ class User
     #[ORM\Column]
     private int $id;
 
-    #[Assert\NotBlank(message: 'Email не может быть пустым!')]
-    #[Assert\Email(message: 'Некорректный email!')]
+    #[Assert\NotBlank(message: 'Email не может быть пустым!', groups: ['email'])]
+    #[Assert\Email(message: 'Некорректный email!', groups: ['email'])]
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $email;
 
-    #[Assert\NotBlank(message: 'Пароль не может быть пустым!')]
-    #[Assert\PasswordStrength(
-        minScore: Assert\PasswordStrength::STRENGTH_WEAK,
-        message: 'Слишком простой пароль! Придумайте посложнее!'
-    )]
+    #[Assert\NotBlank(message: 'Пароль не может быть пустым!', groups: ['password'])]
+    #[Assert\PasswordStrength(minScore: Assert\PasswordStrength::STRENGTH_WEAK, groups: ['password'], message: 'Слишком простой пароль!', )]
     #[ORM\Column(type: 'string', length: 255)]
     private string $password;
 
     #[Assert\NotBlank(message: 'Подтвердите пароль!')]
-    #[Assert\IdenticalTo(propertyPath: 'password', message: 'Введённые пароли не совпадают. Проверьте, что оба поля содержат одинаковый пароль!')]
+    #[Assert\IdenticalTo(propertyPath: 'password', message: 'Введённые пароли не совпадают. Проверьте, что оба поля содержат одинаковый пароль!', groups: ['passwordRepeat'])]
     private string $passwordRepeat;
 
     /**
