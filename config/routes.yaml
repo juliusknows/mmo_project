@@ -25,7 +25,14 @@ check_email:
     controller: App\Controller\MainController::checkEmail
     methods: ['POST']
 
+check_password:
+    path: /check-password
+    controller: App\Controller\MainController::checkPassword
+    methods: ['POST']
+
 clear_table:
     path: /CLEAR
     controller: App\Controller\TableClearController::clearUserEntityTable
     methods: ['POST']
+
+
