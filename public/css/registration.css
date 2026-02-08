@@ -1,159 +1,255 @@
+/* registration.css */
+
+/* 1. ОБЩИЕ СТИЛИ И СБРОС ПО УМОЛЧАНИЮ */
+* {
+    margin: 0;          /* Убираем все внешние отступы */
+    padding: 0;         /* Убираем все внутренние отступы */
+    box-sizing: border-box; /* Ширина/высота включают padding и border */
+}
+
+/* 2. СТИЛИ ДЛЯ ОСНОВНОГО ТЕЛА СТРАНИЦЫ */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Шрифт с запасными вариантами */
+    line-height: 1.6;  /* Межстрочный интервал */
+    color: #444;       /* Основной цвет текста (тёмно‑серый) */
+    background-color: #f9f9f9; /* Светлый фон страницы */
+}
+
+/* 3. ФОНОВОЕ ИЗОБРАЖЕНИЕ */
 .full-screen-img {
-    position: fixed; /* Фиксируем на экране */
+    position: fixed;    /* Фиксируется на экране */
     top: 0;
     left: 0;
-    width: 100vw;    /* Ширина — 100% от ширины экрана */
-    height: 100vh;  /* Высота — 100% от высоты экрана */
-    object-fit: cover; /* Сохраняем пропорции, заполняем всю область */
-    z-index: -1;   /* Отправляем на задний план (если нужно) */
+    width: 100%;     /* Занимает всю ширину */
+    height: 100%;   /* Занимает всю высоту */
+    object-fit: cover; /* Масштабирует изображение без искажений */
+    z-index: -1;    /* Находится под всеми элементами */
+    filter: brightness(1.1); /* Немного осветляем изображение */
 }
 
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
+/* 4. КОНТЕЙНЕР ФОРМЫ РЕГИСТРАЦИИ */
 .registration-container {
-    width: 100%;
-    max-width: 420px;
-    padding: 32px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    position: relative;
+    max-width: 450px; /* Максимальная ширина формы */
+    margin: 60px auto;  /* Отступы сверху/снизу 60px, по бокам — автоцентрирование */
+    padding: 40px 30px; /* Внутренние отступы */
+    background: rgba(255, 255, 255, 0.96); /* Белый фон с прозрачностью */
+    border-radius: 16px; /* Скруглённые углы */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08); /* Лёгкая тень */
+    backdrop-filter: blur(12px); /* Эффект размытия под элементом */
+    border: 1px solid rgba(255, 255, 255, 0.8); /* Тонкая светлая граница */
 }
 
+/* 5. ЗАГОЛОВОК ФОРМЫ */
 .heading {
-    margin-bottom: 24px;
-    color: #2c3e50;
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 1.2;
+    text-align: center; /* Центрирование текста */
+    margin-bottom: 35px; /* Отступ снизу */
+    color: #2c3e50; /* Тёмно‑синий цвет */
+    font-size: 28px; /* Размер шрифта */
+    font-weight: 600; /* Полужирное начертание */
+    letter-spacing: 0.5px; /* Межбуквенное расстояние */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
 }
 
+/* 6. ОСНОВНОЙ БЛОК ПОЛЕЙ ФОРМЫ */
+.form-fields {
+    display: flex; /* Гибкий контейнер */
+    flex-direction: column; /* Вертикальное расположение элементов */
+    gap: 28px; /* Расстояние между полями */
+}
+
+/* 7. ГРУППА ПОЛЕЙ (метка + поле ввода) */
 .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+    display: flex;
+    flex-direction: column; /* Метка сверху, поле снизу */
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #4a5568;
-    font-size: 14px;
-    font-weight: 500;
+/* 8. СТРОКА С МЕТКОЙ И ИНДИКАТОРОМ */
+.line-field-group {
+    display: flex;
+    justify-content: space-between; /* Метка слева, индикатор справа */
+    align-items: center; /* Вертикальное выравнивание */
+    margin-bottom: 10px; /* Отступ снизу */
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"] {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 16px;
-    color: #2d3748;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* Учёт отступов в ширине */
+/* 9. СТИЛИ МЕТОК (label) */
+label {
+    color: #555; /* Серый цвет текста */
+    font-weight: 500; /* Средняя насыщенность */
+    font-size: 15px;
+    transition: color 0.3s ease; /* Плавное изменение цвета при наведении */
 }
 
-/* СТИЛИ ДЛЯ ОШИБОК (усиленная специфичность) */
-#user_registration_email_error1 {
-    display: block;
-    margin-top: 8px;
-    padding: 10px 14px;
-    border-radius: 6px;
-    background-color: #fef2f2; /* Бледно‑красный фон */
-    border: 1px solid #fcb0b0; /* Светлая красная рамка */
+/* 10. ИНДИКАТОРЫ СТАТУСА (сообщения об ошибках/успехе) */
+.alarm {
     font-size: 13px;
-    color: #e53e3e; /* Красный текст */
+    min-height: 22px; /* Минимальная высота для выравнивания */
+    padding: 3px 0; /* Вертикальные отступы */
+    text-align: right; /* Выравнивание по правому краю */
+    font-style: italic; /* Наклонный шрифт */
 }
 
-#user_registration_password_error1 {
-    display: block;
-    margin-top: 8px;
-    padding: 10px 14px;
-    border-radius: 6px;
-    background-color: #fef2f2; /* Бледно‑красный фон */
-    border: 1px solid #fcb0b0; /* Светлая красная рамка */
-    font-size: 13px;
-    color: #e53e3e; /* Красный текст */
+/* 11. ПОЛЯ ВВОДА (email и password) */
+input[type="email"],
+input[type="password"] {
+    width: 100%; /* Полная ширина */
+    padding: 15px 18px; /* Внутренние отступы */
+    border: 2px solid #e0e0e0; /* Светлая серая граница */
+    border-radius: 10px; /* Скруглённые углы */
+    font-size: 15px;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); /* Плавная анимация */
+    background-color: #ffffff; /* Белый фон */
+    color: #333; /* Тёмный текст */
 }
 
-#user_registration_passwordRepeat_error1 {
-    display: block;
-    margin-top: 8px;
-    padding: 10px 14px;
-    border-radius: 6px;
-    background-color: #fef2f2; /* Бледно‑красный фон */
-    border: 1px solid #fcb0b0; /* Светлая красная рамка */
-    font-size: 13px;
-    color: #e53e3e; /* Красный текст */
+/* 12. СОСТОЯНИЕ ФОКУСА ПОЛЕЙ ВВОДА */
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none; /* Убираем стандартную рамку фокуса */
+    border-color: #66bb6a; /* Зелёный цвет границы при фокусе */
+    box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.15); /* Свечение */
+    transform: translateY(-1px); /* Лёгкое смещение вверх */
 }
 
-/* ИНДИКАТОР СТАТУСА EMAIL (alarm) */
-#user_email_status {
-    height: 20px;
-    margin-top: 6px;
-    font-size: 13px;
-    text-align: left;
-    padding-left: 4px;
+/* 13. СОСТОЯНИЯ ВАЛИДАЦИИ ПОЛЕЙ */
+input[type="email"].is-invalid,
+input[type="password"].is-invalid {
+    border-color: #ef5350; /* Красный цвет для ошибок */
 }
 
+input[type="email"].is-valid,
+input[type="password"].is-valid {
+    border-color: #66bb6a; /* Зелёный цвет для валидных полей */
+}
 
-
-/* КНОПКА ОТПРАВКИ */
+/* 14. КНОПКА ОТПРАВКИ */
 .btn {
     width: 100%;
-    padding: 14px 20px;
-    background-color: #3182ce; /* Синий цвет кнопки */
+    padding: 17px;
+    background: linear-gradient(135deg, #66bb6a, #43a047); /* Зелёный градиент */
     color: white;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 12px;
+    border: none; /* Убираем границу */
+    border-radius: 10px; /* Скруглённые углы */
+    cursor: pointer; /* Курсор-указатель */
+    transition: all 0.3s ease; /* Плавные переходы */
+    text-transform: uppercase; /* Все буквы заглавные */
+    letter-spacing: 1.2px; /* Расстояние между буквами */
+    box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3); /* Тень */
 }
 
-/* ЭФФЕКТ НАВЕДЕНИЯ НА КНОПКУ */
-.btn:hover {
-    background-color: #2b6cb0; /* Темнее при наведении */
-    transform: translateY(-3px);
+/* 15. СОСТОЯНИЕ НАВЕДЕНИЯ НА КНОПКУ */
+.btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #43a047, #2b702e); /* Более тёмный градиент */
+    transform: translateY(-2px); /* Смещение вверх */
+    box-shadow: 0 6px 15px rgba(67, 160, 71, 0.4); /* Более выраженная тень */
 }
 
-/* АКТИВНОЕ СОСТОЯНИЕ КНОПКИ */
-.btn:active {
-    transform: translateY(0);
+/* 16. СОСТОЯНИЕ БЛОКИРОВКИ КНОПКИ */
+.btn:disabled {
+    opacity: 0.7; /* Полупрозрачность */
+    cursor: not-allowed; /* Курсор «запрещено» */
+    background: #bdbdbd; /* Серый фон */
+    box-shadow: none; /* Убираем тень */
 }
 
+/* 17. ЦВЕТА СООБЩЕНИЙ ВАЛИДАЦИИ */
+.alarm.success {
+    color: #4caf50;        /* Зелёный цвет для сообщений об успехе */
+    font-weight: 500;     /* Средняя насыщенность шрифта */
+}
 
-    .heading {
-        font-size: 24px;
+.alarm.error {
+    color: #e53935;        /* Красный цвет для сообщений об ошибках */
+    font-weight: 500;     /* Средняя насыщенность шрифта */
+}
+
+.alarm.warning {
+    color: #ff9800;        /* Оранжевый/золотистый цвет для предупреждений */
+    font-weight: 500;     /* Средняя насыщенность шрифта */
+}
+
+/* 18. АНИМАЦИЯ ДЛЯ СООБЩЕНИЙ ВАЛИДАЦИИ */
+/* При валидном вводе — пульсирует сообщение об успехе */
+/* При невалидном вводе — пульсирует сообщение об ошибке */
+input:valid ~ .alarm.success,
+input:invalid ~ .alarm.error {
+    animation: pulse 0.6s ease-in-out; /* Запускаем анимацию pulse */
+}
+
+/* Описание анимации pulse */
+@keyframes pulse {
+    0% {
+        opacity: 1;           /* Полная прозрачность в начале */
+        transform: scale(1);  /* Обычный размер */
+    }
+    50% {
+        opacity: 0.8;         /* Немного затемняем */
+        transform: scale(1.03); /* Немного увеличиваем */
+    }
+    100% {
+        opacity: 1;           /* Возвращаем полную прозрачность */
+        transform: scale(1);  /* Возвращаем исходный размер */
+    }
+}
+
+/* 19. АДАПТИВНОСТЬ (для экранов до 500px) */
+@media (max-width: 500px) {
+    .registration-container {
+        margin: 20px;                /* Уменьшаем внешние отступы */
+        padding: 30px 20px;          /* Уменьшаем внутренние отступы */
+        border-radius: 12px;       /* Немного уменьшаем скругление углов */
     }
 
-    .form-group input {
-        padding: 10px 14px;
-        font-size: 15px;
+    .heading {
+        font-size: 24px;            /* Уменьшаем размер заголовка */
+        margin-bottom: 25px;       /* Уменьшаем отступ снизу */
+    }
+}
+
+/* 20. ТЁМНАЯ ТЕМА (автоматическое определение через prefers-color-scheme) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1e1e1e;   /* Тёмный фон страницы */
+        color: #e0e0e0;             /* Светло‑серый текст */
+    }
+
+    .full-screen-img {
+        filter: brightness(0.6) saturate(1.1) contrast(1.3); /* Корректируем изображение для тёмной темы */
+    }
+
+    .registration-container {
+        background: rgba(40, 40, 40, 0.94); /* Тёмно‑серый фон с прозрачностью */
+        border: 1px solid rgba(60, 60, 60, 0.6); /* Тёмная граница */
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        background-color: #2d2d2d;   /* Тёмный фон полей ввода */
+        border-color: #505050;       /* Тёмная граница */
+        color: #f0f0f0;             /* Светлый текст */
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+        border-color: #81c784;       /* Светло‑зелёная граница при фокусе */
+        box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.25); /* Свечение */
+    }
+
+    label {
+        color: #ccc;                 /* Светло‑серый цвет меток */
+    }
+
+    .alarm {
+        color: #aaa;                 /* Серый цвет сообщений */
     }
 
     .btn {
-        padding: 12px 16px;
-        font-size: 15px;
+        background: linear-gradient(135deg, #81c784, #5e9e60); /* Светло‑зелёный градиент */
     }
 
-/* УСИЛЕНИЕ ВИЗУАЛЬНОГО ВНИМАНИЯ: КРАСНАЯ ГРАНИЦА У ПОЛЯ ПРИ ОШИБКЕ */
-.form-group input.is-invalid,
-.form-group input:invalid {
-    border-color: #e53e3e !important; /* Ярко‑красный */
-    box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.1);
+    .btn:hover:not(:disabled) {
+        background: linear-gradient(135deg, #5e9e60, #457548); /* Более тёмный градиент при наведении */
+    }
 }
