@@ -21,7 +21,7 @@ final class UserRegistrationType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'Email:',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
@@ -29,7 +29,7 @@ final class UserRegistrationType extends AbstractType
                 ],
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Пароль',
+                'label' => 'Пароль:',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
@@ -37,7 +37,7 @@ final class UserRegistrationType extends AbstractType
                 ],
             ])
             ->add('passwordRepeat', PasswordType::class, [
-                'label' => 'Подтверждение пароля',
+                'label' => 'Подтверждение пароля:',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
