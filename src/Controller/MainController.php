@@ -11,16 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class MainController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ValidatorInterface $validator
+    ) {
     }
 
     public function indexAction(): Response
@@ -49,28 +47,75 @@ final class MainController extends AbstractController
 
     public function checkEmail(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $email = $data['email'] ?? '';
+        $data = json_decode($request->getContent());
+        $email = $data->email ?? '';
 
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($email, [
-            new Assert\Email(),
-            new Assert\NotBlank(),
-        ]);
+        $user = new User();
+        $user->setEmail($email);
+        $violations = $this->validator->validate($user, null, ['email']);
 
         if ($violations->count() > 0) {
             return new JsonResponse([
-                'error' => 'Некорректный email',
-                'massage' => 'Валидация не пройдена',
+                'success' => false,
+                'messageMail' => $violations->get(0)->getMessage(),
+                'error' => 'Ошибка валидации email',
             ]);
         }
 
         $user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $email]);
+        $result = null === $user;
 
         return new JsonResponse([
-            'exists' => null !== $user,
-            'message' => null !== $user ? 'Этот email уже занят' : 'Email доступен',
+            'success' => true,
+            'messageMail' => $result ? 'Этот email свободен!' : 'Этот email уже занят!',
+            'data' => $user,
+        ]);
+    }
+
+    public function checkPassword(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent());
+        $password = $data->password ?? '';
+        $passwordRepeat = $data->passwordRepeat ?? '';
+
+        $user = new User();
+        $user->setPassword($password);
+
+        $violations = $this->validator->validate($user, null, ['password']);
+
+        if ($violations->count() > 0) {
+            return new JsonResponse([
+                'success' => false,
+                'messagePass' => $violations->get(0)->getMessage(),
+                'error' => 'Ошибка валидации пароля',
+                'data' => [
+                    'password' => false,
+                ],
+            ]);
+        }
+
+        if ($password !== $passwordRepeat) {
+            return new JsonResponse([
+                'success' => true,
+                'messagePass' => 'Хороший пароль!',
+                'messageRepeat' => 'Пароли не совпадают!',
+                'error' => 'Подтверждение не валидно',
+                'data' => [
+                    'password' => true,
+                    'passwordRepeat' => false,
+                ],
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'messagePass' => 'Хороший пароль!',
+            'messageRepeat' => 'Совпадают!',
+            'data' => [
+                'password' => true,
+                'passwordRepeat' => true,
+            ],
         ]);
     }
 }
