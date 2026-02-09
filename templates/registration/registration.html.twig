@@ -13,7 +13,7 @@
 
         <h1 class="heading">Регистрация</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'id': 'registrationForm'}} ) }}
 
         <div class="form-fields">
 
@@ -45,7 +45,8 @@
                 {{ form_errors(form.passwordRepeat) }}
             </div>
 
-            <button type="submit" class="btn" disabled>Зарегистрироваться</button>
+            <button type="submit" class="btn" id="submitBtn" disabled>Зарегистрироваться</button>
+
 
         </div>
 
@@ -56,4 +57,5 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/registration.js') }}"></script>
+    <script src="{{ asset('js/apiRegistration.js') }}"></script>
 {% endblock %}
