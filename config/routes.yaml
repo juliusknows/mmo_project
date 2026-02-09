@@ -20,6 +20,11 @@ registration:
     controller: App\Controller\MainController::registrationAction
     methods: ['GET', 'POST']
 
+api_registration:
+    path: /api/registration
+    controller: App\Controller\MainController::apiRegistrationAction
+    methods: ['POST']
+
 check_email:
     path: /check-email
     controller: App\Controller\MainController::checkEmail
