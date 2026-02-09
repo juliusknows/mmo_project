@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\UserRegistrationRequest;
 use App\Entity\User;
 use App\Form\UserRegistrationType;
+use App\Service\UserRegistrationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,13 +19,13 @@ final class MainController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
     public function indexAction(): Response
     {
-        return new Response('Куку');
+        return $this->render('test.html.twig');
     }
 
     public function registrationAction(Request $request): Response
@@ -43,6 +45,19 @@ final class MainController extends AbstractController
         return $this->render('registration/registration.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    public function apiRegistrationAction(Request $request, UserRegistrationService $registrationService): JsonResponse
+    {
+        $dto = UserRegistrationRequest::fromJson($request->getContent());
+
+        $result = $registrationService->register($dto);
+
+        if (false === $result['success']) {
+            return new JsonResponse($result, Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($result, Response::HTTP_CREATED);
     }
 
     public function checkEmail(Request $request): JsonResponse
