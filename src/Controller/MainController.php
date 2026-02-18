@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\UserRegistrationRequest;
 use App\Entity\User;
 use App\Form\UserRegistrationType;
-use App\Service\UserRegistrationService;
+use App\Request\UserRegistrationRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 final class MainController extends AbstractController
 {
@@ -47,17 +47,27 @@ final class MainController extends AbstractController
         ]);
     }
 
-    public function apiRegistrationAction(Request $request, UserRegistrationService $registrationService): JsonResponse
+    public function apiRegistrationAction(UserRegistrationRequest $requestApi): JsonResponse
     {
-        $dto = UserRegistrationRequest::fromJson($request->getContent());
+        $user = new User();
+        $user->setEmail($requestApi->getEmail());
+        $user->setPassword($requestApi->getPassword());
 
-        $result = $registrationService->register($dto);
-
-        if (false === $result['success']) {
-            return new JsonResponse($result, Response::HTTP_BAD_REQUEST);
+        try {
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        } catch (Throwable $exception) {
+            return new JsonResponse([
+                'success' => true,
+                'error' => $exception->getMessage(),
+                'message' => 'Такой пользователь уже существует!',
+            ], Response::HTTP_OK);
         }
 
-        return new JsonResponse($result, Response::HTTP_CREATED);
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Пользователь зарегистрирован',
+        ], Response::HTTP_OK);
     }
 
     public function checkEmail(Request $request): JsonResponse
