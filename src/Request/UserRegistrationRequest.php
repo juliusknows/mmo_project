@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace App\Request;
 
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,17 +32,11 @@ final readonly class UserRegistrationRequest implements RequestInterface
 
     public function __construct(Request $request)
     {
-        $data = $request->attributes->get('json');
+        $data = $request->request->all();
 
-        foreach (['email', 'password', 'passwordRepeat'] as $field) {
-            if (!isset($data[$field])) {
-                throw new InvalidArgumentException("Поле '$field' обязательно в json запросе!");
-            }
-        }
-
-        $this->email = strtolower(trim((string) $data['email']));
-        $this->password = trim((string) $data['password']);
-        $this->passwordRepeat = trim((string) $data['passwordRepeat']);
+        $this->email = strtolower(trim((string) ($data['email'] ?? '')));
+        $this->password = trim((string) ($data['password'] ?? ''));
+        $this->passwordRepeat = trim((string) ($data['passwordRepeat'] ?? ''));
     }
 
     public function getEmail(): string
