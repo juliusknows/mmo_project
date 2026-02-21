@@ -1,18 +1,23 @@
 <?php
 
+/** @noinspection PhpMultipleClassDeclarationsInspection */
+
 declare(strict_types=1);
 
-namespace App\Request;
+namespace App\Resolver;
 
-use App\Service\ThrowableValidator;
+use App\Exception\RequestValidationException;
+use App\Request\RequestInterface;
+use App\Validator\ThrowableValidator;
+use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
- * Задача класса передать в контроллер заполненную и валидную форму имплементирующие указанный интерфейс
+ * Задача класса передать в контроллер заполненную и валидную форму имплементирующие указанный интерфейс.
+ * IDE не видит неочевидный вызов резолвера из-за динамической регистрации в Symfony.
  *
  * @noinspection PhpUnused
  */
@@ -25,6 +30,7 @@ final readonly class ArgumentValueResolver implements ValueResolverInterface
     /**
      * @return iterable<RequestInterface>
      */
+    #[Override]
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $className = $argument->getType();
@@ -36,8 +42,10 @@ final readonly class ArgumentValueResolver implements ValueResolverInterface
         try {
             $dto = new $className($request);
             $this->troubleValidator->validate($dto);
-        } catch (ValidationFailedException $exception) {
-            throw new BadRequestHttpException('Ошибка при попытке создать DTO: ' . $exception->getMessage());
+        } catch (ValidationFailedException $e) {
+            $violations = $e->getViolations();
+
+            throw new RequestValidationException($violations);
         }
 
         return [$dto];

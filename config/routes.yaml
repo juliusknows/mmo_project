@@ -17,22 +17,12 @@ homepage:
 
 registration:
     path: /registration
-    controller: App\Controller\MainController::registrationAction
-    methods: ['GET', 'POST']
+    controller: App\Controller\MainController::showRegistrationFormAction
+    methods: ['GET']
 
-api_registration:
+registration_process:
     path: /api/registration
-    controller: App\Controller\MainController::apiRegistrationAction
-    methods: ['POST']
-
-check_email:
-    path: /check-email
-    controller: App\Controller\MainController::checkEmail
-    methods: ['POST']
-
-check_password:
-    path: /check-password
-    controller: App\Controller\MainController::checkPassword
+    controller: App\Controller\MainController::RegistrationAction
     methods: ['POST']
 
 clear_table:

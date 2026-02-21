@@ -1,181 +1,74 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Элементы формы
-    const emailInput = document.getElementById('user_registration_email');
-    const emailStatus = document.getElementById('user_email_status');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registrationForm');
+        // Проверка на наличие поля
+    if (!form) {
+        console.error('Форма с ID "registrationForm" не найдена');
+        alert('Форма с ID "registrationForm" не найдена');
+        return;
+    }
+        // Слушатель кнопки, запускается после нажатия
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    const passwordInput = document.getElementById('user_registration_password');
-    const passwordStatus = document.getElementById('user_password_status');
-
-    const passwordRepeatInput = document.getElementById('user_registration_passwordRepeat');
-    const passwordRepeatStatus = document.getElementById('user_passwordRepeat_status');
-
-    // Кнопка отправки
-    const submitBtn = document.querySelector('.btn');
-
-    // Состояние валидности полей
-    const validationState = {
-        email: false,
-        password: false,
-        passwordRepeat: false
-    };
-
-    // Общий fetch‑запрос
-    async function apiRequest(url, data) {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Loading...';
+        // Записывает в значение содержание полей
+        const formData = {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            passwordRepeat: document.getElementById('passwordRepeat').value
+        };
+        // Подключение к бэкэнду
         try {
-            const response = await fetch(url, {
+            const response = await fetch(form.action, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
             });
+            console.log('Получен ответ от сервера. HTTP-статус:', response.status);
 
-            if (!response.ok) console.error(`HTTP ${response.status}`);
-            return await response.json();
+            if (!response.ok) {
+                const result = await response.json();
+                showAlertErrors(result);
+                return;
+            }
+            const result = await response.json();
+            alert(result.message);
+
         } catch (error) {
-            console.error(`Ошибка запроса к ${url}:`, error);
-            return { success: false, messageMail: 'Не удалось выполнить запрос.' };
+            console.error('Сетевая ошибка сервера:', error);
+            alert('Извините, ошибка на нашей стороне, попробуйте повторить регистрацию позже!');
+        } finally {
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Зарегистрироваться';
+            }, 100);
         }
-    }
+    });
 
-    function setupValidation(input, statusEl, validateFn, delay = 500) {
-        let timeoutId;
+    // Ошибки бэкэнда во всплывающем окне
+    function showAlertErrors(errorResponse) {
+        let alertMessage = 'Внимание: ';
 
-        input.addEventListener('input', (e) => {
-            const value = e.target.value.trim();
-            statusEl.textContent = '';
-            statusEl.style.color = '';
+        if (errorResponse.message) {
+            alertMessage += errorResponse.message + '\n\n';
+        }
 
-            if (value) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(async () => {
-                    const result = await validateFn(value);
-
-                    // 1. Выбираем сообщение в зависимости от поля
-                    let message;
-                    if (input === emailInput) {
-                        message = result.messageMail || 'Проверка...';
-                    } else if (input === passwordInput) {
-                        message = result.messagePass || 'Проверка пароля...';
-                    } else if (input === passwordRepeatInput) {
-                        message = result.messageRepeat || result.messagePass || 'Проверка повтора...';
-                    }
-
-                    statusEl.textContent = message;
-
-                    // 2. Анализируем data для цветовой индикации
-                    if (
-                        result.data &&
-                        typeof result.data === 'object' &&
-                        !Array.isArray(result.data)
-                    ) {
-                        if (input === passwordInput && 'password' in result.data) {
-                            statusEl.style.color = result.data.password === true ? 'green' : 'red';
-                        } else if (input === passwordRepeatInput && 'passwordRepeat' in result.data) {
-                            statusEl.style.color = result.data.passwordRepeat === true ? 'green' : 'red';
-                        } else {
-                            // Для email или других полей — используем общий success
-                            statusEl.style.color = result.success ? 'grey' : 'red';
-                        }
-                    } else {
-                        // Если data нет или некорректна — полагаемся на success
-                        statusEl.style.color = result.success ? 'green' : 'red';
-                    }
-                }, delay);
-            }
-        });
-    }
-
-    // Функция обновления состояния кнопки
-    function updateSubmitButton() {
-        const isValid =
-            validationState.email &&
-            validationState.password &&
-            validationState.passwordRepeat;
-
-        submitBtn.disabled = !isValid;
-
-        // Визуальная обратная связь
-        if (isValid) {
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-            submitBtn.style.backgroundColor = '#4CAF50'; // зелёный
+        if (errorResponse.details) {
+            Object.keys(errorResponse.details).forEach(field => {
+                errorResponse.details[field].forEach(errorText => {
+                    alertMessage += `- ${errorText}\n`;
+                });
+            });
+        }
+        if (alertMessage.trim()) {
+            alert(alertMessage);
         } else {
-            submitBtn.style.opacity = '0.6';
-            submitBtn.style.cursor = 'not-allowed';
-            submitBtn.style.backgroundColor = ''; // сброс
+            alert('message пустое, Караул!');
         }
-    }
-
-    // 1. Валидация email
-    if (emailInput && emailStatus) {
-        setupValidation(emailInput, emailStatus, async (email) => {
-            // Если @ ещё нет — очищаем статус и отмечаем как невалидное
-            if (!email.includes('@')) {
-                emailStatus.textContent = '';
-                emailStatus.style.color = '';
-                validationState.email = false;
-                updateSubmitButton();
-                return null;
-            }
-
-            // Отправляем запрос на сервер
-            const result = await apiRequest('/check-email', { email });
-
-
-            // Обновляем состояние валидности email
-            validationState.email = result.success && result.messageMail === 'Этот email свободен!';
-            updateSubmitButton();
-
-            // Выводим сообщение и цвет
-            let message = result.messageMail || 'Проверка...';
-            emailStatus.textContent = message;
-            emailStatus.style.color = validationState.email ? 'green' : 'red';
-
-
-            return result;
-        });
-    }
-
-    // 2. Валидация пароля
-    if (passwordInput && passwordStatus) {
-        setupValidation(passwordInput, passwordStatus, async () => {
-            const password = passwordInput.value.trim();
-            const passwordRepeat = passwordRepeatInput.value.trim();
-
-            const result = await apiRequest('/check-password', { password, passwordRepeat });
-
-
-            // Обновляем состояние пароля
-            validationState.password = result.data?.password === true;
-            updateSubmitButton();
-
-            // Выводим сообщение и цвет
-            let message = result.messagePass || 'Проверка пароля...';
-            passwordStatus.textContent = message;
-            passwordStatus.style.color = validationState.password ? 'green' : 'red';
-
-            return result;
-        });
-    }
-
-    // 3. Валидация повтора пароля
-    if (passwordRepeatInput && passwordRepeatStatus) {
-        setupValidation(passwordRepeatInput, passwordRepeatStatus, async () => {
-            const password = passwordInput.value.trim();
-            const passwordRepeat = passwordRepeatInput.value.trim();
-
-            const result = await apiRequest('/check-password', { password, passwordRepeat });
-
-
-            // Обновляем состояние повтора
-            validationState.passwordRepeat = result.data?.passwordRepeat === true;
-            updateSubmitButton();
-
-            // Выводим сообщение и цвет
-            let message = result.messageRepeat || result.messagePass || 'Проверка повтора...';
-            passwordRepeatStatus.textContent = message;
-            passwordRepeatStatus.style.color = validationState.passwordRepeat ? 'green' : 'red';
-
-            return result;
-        });
     }
 });
