@@ -30,13 +30,21 @@ final readonly class UserRegistrationRequest implements RequestInterface
      */
     private string $passwordRepeat;
 
+    /**
+     * @var array<string>
+     */
+    private array $accepts;
+
     public function __construct(Request $request)
     {
+        $acceptableTypes = $request->getAcceptableContentTypes();
+
         $data = $request->request->all();
 
         $this->email = strtolower(trim((string) ($data['email'] ?? '')));
         $this->password = trim((string) ($data['password'] ?? ''));
         $this->passwordRepeat = trim((string) ($data['passwordRepeat'] ?? ''));
+        $this->accepts = $acceptableTypes;
     }
 
     public function getEmail(): string
@@ -47,5 +55,13 @@ final readonly class UserRegistrationRequest implements RequestInterface
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    /**
+     * @return array<string> Список MIME‑типов (например, 'application/json', 'text/html')
+     */
+    public function getAccept(): array
+    {
+        return $this->accepts;
     }
 }

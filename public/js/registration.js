@@ -25,23 +25,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify(formData)
             });
             console.log('Получен ответ от сервера. HTTP-статус:', response.status);
 
             if (!response.ok) {
+                if (response.status === 500) {
+                    alert('У нас что то сломалось, но мы вам не покажем!');
+                    return;
+                }
                 const result = await response.json();
                 showAlertErrors(result);
                 return;
             }
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('passwordRepeat').value = '';
             const result = await response.json();
             alert(result.message);
 
         } catch (error) {
             console.error('Сетевая ошибка сервера:', error);
-            alert('Извините, ошибка на нашей стороне, попробуйте повторить регистрацию позже!');
+            alert('Произошла ошибка но это не наша вина, а вашего провайдера.. я надеюсь...');
         } finally {
             setTimeout(() => {
                 submitBtn.disabled = false;
@@ -60,15 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (errorResponse.details) {
             Object.keys(errorResponse.details).forEach(field => {
-                errorResponse.details[field].forEach(errorText => {
-                    alertMessage += `- ${errorText}\n`;
-                });
+                const fieldValue = errorResponse.details[field];
+
+                if (Array.isArray(fieldValue)) {
+                    // Для ошибок валидации (массивы сообщений)
+                    fieldValue.forEach(errorText => {
+                        alertMessage += `- ${errorText}\n`;
+                    });
+                } else {
+                    // Для системных ошибок (строки/числа)
+                    alertMessage += `- ${field}: ${fieldValue}\n`;
+                }
             });
         }
-        if (alertMessage.trim()) {
+
+        if (alertMessage.trim() !== 'Внимание:') {
             alert(alertMessage);
         } else {
-            alert('message пустое, Караул!');
+            alert('Произошла ошибка, но детали недоступны.');
         }
     }
 });

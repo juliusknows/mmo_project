@@ -15,7 +15,7 @@ homepage:
     controller: App\Controller\MainController::indexAction
     methods: ['GET']
 
-registration:
+registration_page:
     path: /registration
     controller: App\Controller\MainController::showRegistrationFormAction
     methods: ['GET']
@@ -28,6 +28,6 @@ registration_process:
 clear_table:
     path: /CLEAR
     controller: App\Controller\TableClearController::clearUserEntityTable
-    methods: ['POST']
+    methods: ['GET']
 
 

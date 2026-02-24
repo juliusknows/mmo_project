@@ -6,33 +6,62 @@ namespace App\Controller;
 
 use App\Request\UserRegistrationRequest;
 use App\Validator\EntityRegistrator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use function in_array;
 
-final class MainController extends AbstractController
+final readonly class MainController
 {
-    public function __construct(private readonly EntityRegistrator $entityRegistrator)
-    {
+    public function __construct(
+        private EntityRegistrator $entityRegistrator,
+        private Environment $twig
+    ) {
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function indexAction(): Response
     {
-        return $this->render('test.html.twig');
+        return new Response($this->twig->render('test.html.twig'));
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function showRegistrationFormAction(): Response
     {
-        return $this->render('registration/registration.html.twig');
+        return new Response($this->twig->render('registration/registration.html.twig', [
+            'title' => 'Регистрация',
+        ]));
     }
 
-    public function registrationAction(UserRegistrationRequest $request): JsonResponse
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function registrationAction(UserRegistrationRequest $request): Response
     {
         $this->entityRegistrator->registerUser($request->getEmail(), $request->getPassword());
 
-        return new JsonResponse([
-            'status' => 'success',
-            'message' => 'Успешная регистрация!',
-        ]);
+        if (in_array('application/json', $request->getAccept(), true)) {
+            return new JsonResponse([
+                'status' => 'success',
+                'message' => 'Успешная регистрация!',
+            ]);
+        }
+
+        return new Response($this->twig->render('registration/registration.html.twig', [
+            'title' => 'Успешная регистрация!',
+        ]));
     }
 }

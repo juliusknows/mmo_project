@@ -47,7 +47,7 @@ body {
     color: #2c3e50; /* Тёмно‑синий цвет */
     font-size: 28px; /* Размер шрифта */
     font-weight: 600; /* Полужирное начертание */
-    letter-spacing: 0.5px; /* Межбуквенное расстояние */
+    letter-spacing: 1px; /* Межбуквенное расстояние */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
 }
 
@@ -56,6 +56,10 @@ body {
     display: flex; /* Гибкий контейнер */
     flex-direction: column; /* Вертикальное расположение элементов */
     gap: 28px; /* Расстояние между полями */
+}
+
+.form-fields2 {
+    margin-top: 20px;
 }
 
 /* 7. ГРУППА ПОЛЕЙ (метка + поле ввода) */
@@ -135,9 +139,14 @@ input[type="password"].is-valid {
     cursor: pointer; /* Курсор-указатель */
     transition: all 0.3s ease; /* Плавные переходы */
     text-transform: uppercase; /* Все буквы заглавные */
-    letter-spacing: 1.2px; /* Расстояние между буквами */
+    letter-spacing: 1px; /* Расстояние между буквами */
     box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3); /* Тень */
 }
+.btn-blue {
+    background: linear-gradient(135deg, #2d2d2d, #e53935); /* Красный градиент */
+    box-shadow: 0 4px 10px rgba(239, 83, 80, 0.3);
+}
+
 
 /* 15. СОСТОЯНИЕ НАВЕДЕНИЯ НА КНОПКУ */
 .btn:hover:not(:disabled) {
@@ -253,3 +262,4 @@ input:invalid ~ .alarm.error {
         background: linear-gradient(135deg, #5e9e60, #457548); /* Более тёмный градиент при наведении */
     }
 }
+
