@@ -40,14 +40,14 @@ final readonly class ArgumentValueResolver implements ValueResolverInterface
         }
 
         try {
-            $dto = new $className($request);
-            $this->troubleValidator->validate($dto);
+            $customRequest = new $className($request);
+            $this->troubleValidator->validate($customRequest, null, 'registration');
         } catch (ValidationFailedException $e) {
             $violations = $e->getViolations();
 
             throw new RequestValidationException($violations);
         }
 
-        return [$dto];
+        return [$customRequest];
     }
 }
