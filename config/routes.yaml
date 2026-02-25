@@ -7,25 +7,26 @@
 # To list all registered routes, run the following command:
 #   bin/console debug:router
 
+api_routes:
+    resource: 'routes/routes_api.yaml'
+    prefix: /api
+    defaults:
+        _format: json
+
 controllers:
     resource: routing.controllers
 
 homepage:
     path: /
-    controller: App\Controller\MainController::indexAction
+    controller: App\Controller\UserController::showTestAction
     methods: ['GET']
 
-registration_page:
+user_registration_page:
     path: /registration
-    controller: App\Controller\MainController::showRegistrationFormAction
+    controller: App\Controller\UserController::showRegistrationAction
     methods: ['GET']
 
-registration_process:
-    path: /api/registration
-    controller: App\Controller\MainController::RegistrationAction
-    methods: ['POST']
-
-clear_table:
+user_clear_table:
     path: /CLEAR
     controller: App\Controller\TableClearController::clearUserEntityTable
     methods: ['GET']

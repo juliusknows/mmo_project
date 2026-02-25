@@ -1,0 +1,19 @@
+api_doc:
+    path: /doc
+    controller: nelmio_api_doc.controller.swagger_ui
+    methods: ['GET']
+
+api_json:
+    path: /doc.json
+    controller: nelmio_api_doc.controller.swagger
+    methods: ['GET']
+
+api_registration_check_email:
+    path: /email
+    controller: App\Controller\Api\UserApiController::checkEmailAction
+    methods: ['POST']
+
+api_user_registration_process:
+    path: /registration
+    controller: App\Controller\UserApiController::registrationAction
+    methods: ['POST']
