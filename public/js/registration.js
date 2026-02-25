@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(formData)
             });
             console.log('Получен ответ от сервера. HTTP-статус:', response.status);
-
             if (!response.ok) {
                 if (response.status === 500) {
                     alert('У нас что то сломалось, но мы вам не покажем!');
@@ -40,11 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAlertErrors(result);
                 return;
             }
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('passwordRepeat').value = '';
+
+            alert('Регистрация успешна!');
             const result = await response.json();
-            alert(result.message);
+            window.location.replace(result.redirect);
 
         } catch (error) {
             console.error('Сетевая ошибка сервера:', error);
