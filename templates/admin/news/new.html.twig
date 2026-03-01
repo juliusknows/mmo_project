@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Добавить новость{% endblock %}
+
+
+{% block body %}
+    <div class="container my-4">
+        <h2 class="mb-4">Добавить новость</h2>
+
+        <form method="post" action="{{ path('admin_news_create') }}" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Заголовок:</label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       value="{{ news.title ?? '' }}"
+                       class="form-control"
+                       required
+                       maxlength="255">
+                <div class="invalid-feedback">
+                    Пожалуйста, введите заголовок.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="summary" class="form-label">Краткое описание:</label>
+                <input type="text"
+                       id="summary"
+                       name="summary"
+                       value="{{ news.summary ?? '' }}"
+                       class="form-control"
+                       required
+                       maxlength="255">
+                <div class="invalid-feedback">
+                    Пожалуйста, введите краткое описание.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Полный текст:</label>
+                <textarea id="content"
+                          name="content"
+                          rows="8"
+                          class="form-control"
+                          required>{{ news.content ?? '' }}</textarea>
+                <div class="invalid-feedback">
+                    Пожалуйста, введите полный текст новости.
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
+                <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

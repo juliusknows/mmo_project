@@ -1,0 +1,87 @@
+{% extends 'admin/base.html.twig' %}
+
+
+{% block title %}Админка{% endblock %}
+
+
+{% block body %}
+    <main class="admin-dashboard container my-4">
+        <section class="dashboard-stats" aria-labelledby="stats-heading">
+            <h2 id="stats-heading" class="mb-4">Добро пожаловать в админ‑панель!</h2>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title stat-label">Всего регистраций:</h5>
+                            <p class="card-text fs-3 fw-bold text-primary">{{ dashboardData.totalUser|default(0) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title stat-label">Всего новостей:</h5>
+                            <p class="card-text fs-3 fw-bold text-success">{{ dashboardData.totalNews|default(0) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title stat-label">Всего комментариев:</h5>
+                            <p class="card-text fs-3 fw-bold text-warning">{{ dashboardData.totalComment|default(0) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-news mt-5" aria-labelledby="news-heading">
+            <h3 id="news-heading" class="mb-3">Последние новости</h3>
+
+            {% set latestNews = dashboardData.latestNews|default([]) %}
+            {% if latestNews is empty %}
+                <div class="alert alert-info text-center">
+                    <p>Новых новостей пока нет.</p>
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Заголовок</th>
+                            <th scope="col">Краткое описание</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for news in latestNews %}
+                            <tr>
+                                <td><strong>{{ news.title }}</strong></td>
+                                <td>{{ news.summary }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="quick-actions mt-5" aria-labelledby="actions-heading">
+            <h3 id="actions-heading" class="mb-3">Быстрые действия</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ path('admin_news_new') }}" class="btn btn-outline-primary flex-grow-1 text-start">
+                        Добавить новость
+                    </a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ path('admin_news_all') }}" class="btn btn-outline-secondary flex-grow-1 text-start">
+                        Посмотреть все новости
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </main>
+{% endblock %}
+

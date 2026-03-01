@@ -19,4 +19,9 @@ final readonly class UserManager
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
+
+    public function getTotal(): int
+    {
+        return $this->entityManager->getRepository(User::class)->count([]);
+    }
 }

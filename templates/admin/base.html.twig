@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ панель — {% block title %}{% endblock %}</title>
+    <link href="{{ asset('css/base.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="admin-header">
+    <h1 class="admin-title">Админ‑панель</h1>
+
+    <a href="{{ path('user_registration_page') }}" class="action-link">Страница регистрации</a>
+    <a href="{{ path('admin_dashboard') }}" class="action-link">Главная админки</a>
+</header>
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<footer>
+    <!-- Футер оставляем пустым, как было изначально -->
+</footer>
+
+<!-- Подключаем Bootstrap JS для работы компонентов -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+

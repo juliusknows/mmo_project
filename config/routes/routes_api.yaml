@@ -15,5 +15,5 @@ api_registration_check_email:
 
 api_user_registration_process:
     path: /registration
-    controller: App\Controller\UserApiController::registrationAction
+    controller: App\Controller\Api\UserApiController::registrationAction
     methods: ['POST']

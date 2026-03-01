@@ -1,10 +1,3 @@
-# yaml-language-server: $schema=../vendor/symfony/routing/Loader/schema/routing.schema.json
-
-# This file is the entry point to configure the routes of your app.
-# Methods with the #[Route] attribute are automatically imported.
-# See also https://symfony.com/doc/current/routing.html
-
-# To list all registered routes, run the following command:
 #   bin/console debug:router
 
 api_routes:
@@ -12,6 +5,10 @@ api_routes:
     prefix: /api
     defaults:
         _format: json
+
+admin_routes:
+    resource: 'routes/routes_admin.yaml'
+    prefix: /admin
 
 controllers:
     resource: routing.controllers
@@ -26,9 +23,20 @@ user_registration_page:
     controller: App\Controller\UserController::showRegistrationAction
     methods: ['GET']
 
+
 user_clear_table:
     path: /CLEAR
     controller: App\Controller\TableClearController::clearUserEntityTable
-    methods: ['GET']
+    methods: ['POST']
+
+
+
+
+
+
+
+
+
+
 
 

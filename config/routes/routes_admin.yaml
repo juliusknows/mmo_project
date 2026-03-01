@@ -1,0 +1,59 @@
+admin_dashboard:
+    path: /
+    controller: App\Controller\Admin\DashboardController::showAdminDashboard
+    methods: ['GET']
+
+admin_news_create:
+    path: /news
+    controller: App\Controller\Admin\NewsCrudController::create
+    methods: ['POST']
+
+admin_news_all:
+    path: /news
+    controller: App\Controller\Admin\NewsCrudController::showAll
+    methods: ['GET']
+
+admin_news_new:
+    path: /news/new
+    controller: App\Controller\Admin\NewsCrudController::new
+    methods: ['GET']
+
+admin_news_show:
+    path: /news/{id}
+    controller: App\Controller\Admin\NewsCrudController::show
+    methods: ['GET']
+
+admin_news_delete:
+    path: /news/{id}
+    controller: App\Controller\Admin\NewsCrudController::delete
+    methods: ['DELETE', 'POST']
+
+admin_news_edit:
+    path: /news/{id}/edit
+    controller: App\Controller\Admin\NewsCrudController::edit
+    methods: ['GET']
+
+admin_news_update:
+    path: /news/{id}
+    controller: App\Controller\Admin\NewsCrudController::update
+    methods: ['PUT', 'PATCH', 'POST']
+
+admin_comment_create:
+    path: /comment
+    controller: App\Controller\Admin\CommentCrudController::create
+    methods: ['POST']
+
+admin_comment_delete:
+    path: /comment/{id}
+    controller: App\Controller\Admin\CommentCrudController::delete
+    methods: ['DELETE', 'POST']
+
+admin_comment_edit:
+    path: /comment/{id}edit
+    controller: App\Controller\Admin\CommentCrudController::edit
+    methods: ['GET']
+
+admin_comment_update:
+    path: /comment/{id}/update
+    controller: App\Controller\Admin\CommentCrudController::update
+    methods: ['PUT', 'PATCH', 'POST']

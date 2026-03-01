@@ -1,0 +1,45 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Редактировать комментарий{% endblock %}
+
+
+{% block body %}
+    <div class="container my-4">
+        <h2 class="mb-4">Редактировать комментарий</h2>
+
+        <form method="post" action="{{ path('admin_comment_update', {'id': comment.id}) }}" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">Автор:</label>
+                <input type="hidden" name="news_id" value="{{ comment.news.id }}">
+                <input type="text"
+                       id="title"
+                       name="author"
+                       value="{{ comment.author }}"
+                       class="form-control"
+                       required
+                       maxlength="255">
+                <div class="invalid-feedback">
+                    Пожалуйста, введите имя автора.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Текст:</label>
+                <textarea id="content"
+                          name="text"
+                          class="form-control"
+                          rows="8"
+                          required>{{ comment.text }}</textarea>
+                <div class="invalid-feedback">
+                    Пожалуйста, введите текст комментария.
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
+                <a href="{{ path('admin_news_all') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
