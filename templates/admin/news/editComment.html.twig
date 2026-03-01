@@ -10,7 +10,7 @@
         <form method="post" action="{{ path('admin_comment_update', {'id': comment.id}) }}" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="title" class="form-label">Автор:</label>
-                <input type="hidden" name="news_id" value="{{ comment.news.id }}">
+                <input type="hidden" name="newsId" value="{{ comment.news.id }}">
                 <input type="text"
                        id="title"
                        name="author"

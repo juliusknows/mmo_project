@@ -57,7 +57,11 @@
                         <tbody>
                         {% for news in latestNews %}
                             <tr>
-                                <td><strong>{{ news.title }}</strong></td>
+                                <td>
+                                    <a href="{{ path('admin_news_show', {'id': news.id}) }}" style="display: block; padding: 8px 12px; text-decoration: none; color: inherit;">
+                                    <strong>{{ news.title }}</strong>
+                                    </a>
+                                </td>
                                 <td>{{ news.summary }}</td>
                             </tr>
                         {% endfor %}

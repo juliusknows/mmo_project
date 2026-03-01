@@ -8,6 +8,7 @@
         <h2 class="mb-4">Редактировать новость</h2>
 
         <form method="post" action="{{ path('admin_news_update', {'id': news.id}) }}" class="needs-validation" novalidate>
+            <input type="hidden" name="_method" value="PUT">
             <div class="mb-3">
                 <label for="title" class="form-label">Заголовок:</label>
                 <input type="text"
