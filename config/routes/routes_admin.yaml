@@ -24,7 +24,7 @@ admin_news_show:
     methods: ['GET']
 
 admin_news_delete:
-    path: /news/{id}
+    path: /news/{id}delete
     controller: App\Controller\Admin\NewsCrudController::delete
     methods: ['DELETE', 'POST']
 
@@ -39,7 +39,7 @@ admin_news_update:
     methods: ['PUT', 'PATCH', 'POST']
 
 admin_comment_create:
-    path: /comment
+    path: /comment/create
     controller: App\Controller\Admin\CommentCrudController::create
     methods: ['POST']
 
@@ -49,7 +49,7 @@ admin_comment_delete:
     methods: ['DELETE', 'POST']
 
 admin_comment_edit:
-    path: /comment/{id}edit
+    path: /comment/{id}/edit
     controller: App\Controller\Admin\CommentCrudController::edit
     methods: ['GET']
 
