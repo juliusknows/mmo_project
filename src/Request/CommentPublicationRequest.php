@@ -30,7 +30,7 @@ final class CommentPublicationRequest implements RequestInterface
         $this->text = trim((string) $data['text']);
         $this->comment->setAuthor($this->author);
         $this->comment->setText($this->text);
-        $this->newsId = (int) $data['news_id'];
+        $this->newsId = (int) $data['newsId'];
     }
 
     public function getComment(): Comment
