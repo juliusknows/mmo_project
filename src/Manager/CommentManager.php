@@ -48,10 +48,10 @@ final readonly class CommentManager
 
     public function refresh(int $id, Comment $comment): void
     {
-        $olDcomment = $this->entityManager->getRepository(Comment::class)->find($id);
+        $oldComment = $this->entityManager->getRepository(Comment::class)->find($id);
 
-        $olDcomment->setAuthor($comment->getAuthor());
-        $olDcomment->setText($comment->getText());
+        $oldComment->setAuthor($comment->getAuthor());
+        $oldComment->setText($comment->getText());
         $this->entityManager->flush();
     }
 }
