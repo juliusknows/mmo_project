@@ -4,6 +4,7 @@
 
 {% block body %}
     <div class="container my-4">
+        <!-- БЛОК НОВОСТИ -->
         <div class="card mb-4">
             <div class="card-body">
                 <h2 class="card-title">{{ news.title|e }}</h2>
@@ -19,15 +20,16 @@
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
-                    <a href="{{ path('admin_news_edit', {'id': news.id}) }}" class="btn btn-outline-primary">Редактировать</a>
+                    <a href="{{ path('admin_news_edit_form', {'id': news.id}) }}" class="btn btn-outline-primary">Редактировать</a>
                 </div>
             </div>
         </div>
 
+        <!-- БЛОК КОММЕНТАРИЕВ -->
         <div class="container">
-            <h4 class="mb-3">Комментарии ({{ news.comments|length }})</h4>
+            <h4 class="mb-3">Комментарии ({{ news.comments|length}})</h4>
 
-            {% if news.comments is empty %}
+            {% if news.comments|length == 0 %}
                 <div class="alert alert-info">
                     <p>Пока нет комментариев. Будьте первым!</p>
                 </div>
@@ -39,7 +41,7 @@
                             <p class="card-text">{{ comment.text|e }}</p>
                             <div class="d-flex gap-2">
                                 <form method="GET"
-                                      action="{{ path('admin_comment_edit', {'id': comment.id}) }}">
+                                      action="{{ path('admin_comment_create_form', {'id': comment.id}) }}">
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">Изменить</button>
                                 </form>
                                 <form method="POST"
@@ -55,14 +57,14 @@
             {% endif %}
         </div>
 
+        <!-- БЛОК ФОРМЫ ДОБАВЛЕНИЯ КОММЕНТАРИЯ -->
         <div class="container mt-4">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Добавить комментарий</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ path('admin_comment_create') }}">
-                        <input type="hidden" name="newsId" value="{{ news.id }}">
+                    <form method="POST" action="{{ path('admin_comment_create', {'id': news.id}) }}">
 
                         <div class="mb-3">
                             <label for="author_{{ news.id }}" class="form-label">Автор:</label>
@@ -89,8 +91,9 @@
             </div>
         </div>
 
+        <!-- ФУТЕР -->
         <footer class="news-footer mt-4 text-center">
-            <a href="{{ path('admin_news_all') }}" class="btn btn-secondary">Назад к списку новостей</a>
+            <a href="{{ path('admin_news_list') }}" class="btn btn-secondary">Назад к списку новостей</a>
         </footer>
     </div>
 {% endblock %}

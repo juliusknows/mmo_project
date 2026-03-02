@@ -7,7 +7,7 @@
 {% block body %}
     <main class="admin-dashboard container my-4">
         <section class="dashboard-stats" aria-labelledby="stats-heading">
-            <h2 id="stats-heading" class="mb-4">Добро пожаловать в админ‑панель!</h2>
+            <h3 id="stats-heading" class="mb-4">Добро пожаловать в админ‑панель!</h3>
 
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
@@ -38,7 +38,7 @@
         </section>
 
         <section class="latest-news mt-5" aria-labelledby="news-heading">
-            <h3 id="news-heading" class="mb-3">Последние новости</h3>
+            <h4 id="news-heading" class="mb-3">Последние новости</h4>
 
             {% set latestNews = dashboardData.latestNews|default([]) %}
             {% if latestNews is empty %}
@@ -72,15 +72,15 @@
         </section>
 
         <section class="quick-actions mt-5" aria-labelledby="actions-heading">
-            <h3 id="actions-heading" class="mb-3">Быстрые действия</h3>
+            <h5 id="actions-heading" class="mb-3">Быстрые действия</h5>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ path('admin_news_new') }}" class="btn btn-outline-primary flex-grow-1 text-start">
+                    <a href="{{ path('admin_news_creat_form') }}" class="btn btn-outline-primary flex-grow-2 text-start">
                         Добавить новость
                     </a>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ path('admin_news_all') }}" class="btn btn-outline-secondary flex-grow-1 text-start">
+                    <a href="{{ path('admin_news_list') }}" class="btn btn-outline-secondary flex-grow-2 text-start">
                         Посмотреть все новости
                     </a>
                 </li>

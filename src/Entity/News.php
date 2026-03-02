@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpParamsInspection */
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -38,12 +40,12 @@ class News
         $this->comments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -55,7 +57,7 @@ class News
         return $this;
     }
 
-    public function getSummary(): ?string
+    public function getSummary(): string
     {
         return $this->summary;
     }
@@ -67,7 +69,7 @@ class News
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -97,15 +99,4 @@ class News
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getNews() === $this) {
-                $comment->setNews(null);
-            }
-        }
-
-        return $this;
-    }
 }

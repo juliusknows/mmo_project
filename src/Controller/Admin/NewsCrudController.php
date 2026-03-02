@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\News;
 use App\Manager\NewsManager;
 use App\Request\NewsPublicationRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,60 +21,52 @@ final readonly class NewsCrudController
     ) {
     }
 
-    public function new(): Response
+    public function createForm(): Response
     {
-        return new Response($this->twig->render('admin/news/new.html.twig'));
+        return new Response($this->twig->render('admin/news/newsForm.html.twig'));
     }
 
-    public function show(int $id): Response
+    public function show(News $news): Response
     {
-        $news = $this->newsManager->findById($id);
-
-        return new Response($this->twig->render('admin/news/show.html.twig', [
+        return new Response($this->twig->render('admin/news/showNews.html.twig', [
             'news' => $news,
         ]));
     }
 
-    public function showAll(): Response
+    public function list(): Response
     {
         $allNews = $this->newsManager->getAll();
 
-        return new Response($this->twig->render('admin/news/all.html.twig', [
+        return new Response($this->twig->render('admin/news/list.html.twig', [
             'allNews' => $allNews,
         ]));
     }
 
     public function create(NewsPublicationRequest $request): RedirectResponse
     {
-        $this->newsManager->create($request->getNews());
+        $news = $this->newsManager->create($request);
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
     }
 
-    public function edit(int $id): Response
+    public function createEditForm(News $news): Response
     {
-        $news = $this->newsManager->findById($id);
-
-        if (null !== $news) {
-            return new Response($this->twig->render('admin/news/edit.html.twig', [
-                'news' => $news,
-            ]));
-        }
-
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new Response($this->twig->render('admin/news/editForm.html.twig', [
+            'news' => $news,
+        ]));
     }
 
-    public function update(int $id, NewsPublicationRequest $request): RedirectResponse
+    public function edit(News $news, NewsPublicationRequest $request): RedirectResponse
     {
-        $this->newsManager->refresh($id, $request->getNews());
+        $this->newsManager->edit($news, $request);
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(News $news): RedirectResponse
     {
-        $this->newsManager->remove($id);
+        $this->newsManager->remove($news);
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_list'));
     }
 }

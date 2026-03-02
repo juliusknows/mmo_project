@@ -7,10 +7,9 @@
     <div class="container my-4">
         <h2 class="mb-4">Редактировать комментарий</h2>
 
-        <form method="post" action="{{ path('admin_comment_update', {'id': comment.id}) }}" class="needs-validation" novalidate>
+        <form method="post" action="{{ path('admin_comment_edit', {'id': comment.id}) }}" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="title" class="form-label">Автор:</label>
-                <input type="hidden" name="newsId" value="{{ comment.news.id }}">
                 <input type="text"
                        id="title"
                        name="author"
@@ -37,7 +36,7 @@
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
-                <a href="{{ path('admin_news_all') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
+                <a href="{{ path('admin_news_list') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
             </div>
         </form>
     </div>

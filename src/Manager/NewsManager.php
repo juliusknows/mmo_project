@@ -7,53 +7,40 @@ declare(strict_types=1);
 namespace App\Manager;
 
 use App\Entity\News;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\NewsRepository;
+use App\Request\NewsPublicationRequest;
 
 final readonly class NewsManager
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        private NewsRepository $newsRepository,
     ) {
     }
 
-    public function create(News $news): void
+    public function create(NewsPublicationRequest $request): News
     {
-        $this->entityManager->persist($news);
-        $this->entityManager->flush();
+        $news = new News();
+        $news->setTitle($request->getTitle());
+        $news->setSummary($request->getSummary());
+        $news->setContent($request->getContent());
+
+        $this->newsRepository->createNews($news);
+
+        return $news;
     }
 
-    public function refresh(int $id, News $news): void
+    public function edit(News $news, NewsPublicationRequest $request): void
     {
-        $oldNews = $this->findById($id);
+        $news->setTitle($request->getTitle());
+        $news->setSummary($request->getSummary());
+        $news->setContent($request->getContent());
 
-        if (null !== $oldNews) {
-            $title = $news->getTitle();
-
-            if (null !== $title) {
-                $oldNews->setTitle($title);
-            }
-            $summary = $news->getSummary();
-
-            if (null !== $summary) {
-                $oldNews->setSummary($summary);
-            }
-            $content = $news->getContent();
-
-            if (null !== $content) {
-                $oldNews->setContent($content);
-            }
-            $this->entityManager->flush();
-        }
+        $this->newsRepository->editNews();
     }
 
-    public function remove(int $id): void
+    public function remove(News $news): void
     {
-        $news = $this->findById($id);
-
-        if (null !== $news) {
-            $this->entityManager->remove($news);
-            $this->entityManager->flush();
-        }
+        $this->newsRepository->removeNews($news);
     }
 
     /**
@@ -61,17 +48,12 @@ final readonly class NewsManager
      */
     public function getAll(): array
     {
-        return $this->entityManager->getRepository(News::class)->findAll();
-    }
-
-    public function findById(int $id): ?News
-    {
-        return $this->entityManager->getRepository(News::class)->find($id);
+        return $this->newsRepository->findAll();
     }
 
     public function getTotal(): int
     {
-        return $this->entityManager->getRepository(News::class)->count([]);
+        return $this->newsRepository->count();
     }
 
     /**
@@ -79,7 +61,6 @@ final readonly class NewsManager
      */
     public function getLatestNews(int $limit = 2): array
     {
-        return $this->entityManager->getRepository(News::class)
-            ->findBy([], ['id' => 'DESC'], $limit);
+        return $this->newsRepository->findBy([], ['id' => 'DESC'], $limit);
     }
 }

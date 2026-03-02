@@ -18,15 +18,13 @@ final readonly class UserApiController
 
     public function registrationAction(UserRegistrationRequest $request): JsonResponse
     {
-        $this->userManager->register($request->getUser());
+        $this->userManager->create($request->getUser());
         $result = ['redirect' => '/admin'];
 
         return new JsonResponse($result, Response::HTTP_OK);
     }
 
     /**
-     * Проверка вводимого email.
-     *
      * @noinspection PhpUnusedParameterInspection
      */
     public function checkEmailAction(UserInputEmailRequest $request): JsonResponse

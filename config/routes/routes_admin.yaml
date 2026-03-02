@@ -8,14 +8,14 @@ admin_news_create:
     controller: App\Controller\Admin\NewsCrudController::create
     methods: ['POST']
 
-admin_news_all:
+admin_news_list:
     path: /news
-    controller: App\Controller\Admin\NewsCrudController::showAll
+    controller: App\Controller\Admin\NewsCrudController::list
     methods: ['GET']
 
-admin_news_new:
-    path: /news/new
-    controller: App\Controller\Admin\NewsCrudController::new
+admin_news_creat_form:
+    path: /news/creatForm
+    controller: App\Controller\Admin\NewsCrudController::createForm
     methods: ['GET']
 
 admin_news_show:
@@ -28,32 +28,32 @@ admin_news_delete:
     controller: App\Controller\Admin\NewsCrudController::delete
     methods: ['DELETE', 'POST']
 
-admin_news_edit:
-    path: /news/{id}/edit
-    controller: App\Controller\Admin\NewsCrudController::edit
+admin_news_edit_form:
+    path: /news/{id}/editForm
+    controller: App\Controller\Admin\NewsCrudController::createEditForm
     methods: ['GET']
 
-admin_news_update:
-    path: /news/{id}
-    controller: App\Controller\Admin\NewsCrudController::update
+admin_news_edit:
+    path: /news/{id}edit
+    controller: App\Controller\Admin\NewsCrudController::edit
     methods: ['PUT', 'PATCH', 'POST']
 
 admin_comment_create:
-    path: /comment/create
+    path: /comment/{id}/create
     controller: App\Controller\Admin\CommentCrudController::create
     methods: ['POST']
 
 admin_comment_delete:
-    path: /comment/{id}
+    path: /comment/{id}/delete
     controller: App\Controller\Admin\CommentCrudController::delete
     methods: ['DELETE', 'POST']
+
+admin_comment_create_form:
+    path: /comment/{id}/editForm
+    controller: App\Controller\Admin\CommentCrudController::createEditForm
+    methods: ['GET']
 
 admin_comment_edit:
     path: /comment/{id}/edit
     controller: App\Controller\Admin\CommentCrudController::edit
-    methods: ['GET']
-
-admin_comment_update:
-    path: /comment/{id}/update
-    controller: App\Controller\Admin\CommentCrudController::update
     methods: ['PUT', 'PATCH', 'POST']

@@ -6,52 +6,45 @@ namespace App\Manager;
 
 use App\Entity\Comment;
 use App\Entity\News;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CommentRepository;
+use App\Request\CommentPublicationRequest;
 
 final readonly class CommentManager
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        private CommentRepository $commentRepository,
     ) {
     }
 
-    public function add(Comment $comment): void
+    public function create(News $news, CommentPublicationRequest $request): void
     {
-        $this->entityManager->persist($comment);
-        $this->entityManager->flush();
+        $comment = new Comment();
+        $comment->setAuthor($request->getAuthor());
+        $comment->setText($request->getText());
+        $comment->setNews($news);
+
+        $this->commentRepository->createComment($comment);
     }
 
-    public function findNewsById(int $id): ?News
+    public function remove(Comment $comment): News
     {
-        return $this->entityManager->getRepository(News::class)->find($id);
-    }
+        $this->commentRepository->removeComment($comment);
 
-    public function findById(int $id): ?Comment
-    {
-        return $this->entityManager->getRepository(Comment::class)->find($id);
-    }
-
-    public function remove(int $id): void
-    {
-        $comment = $this->findById($id);
-
-        if (null !== $comment) {
-            $this->entityManager->remove($comment);
-            $this->entityManager->flush();
-        }
+        return $comment->getNews();
     }
 
     public function getTotal(): int
     {
-        return $this->entityManager->getRepository(Comment::class)->count([]);
+        return $this->commentRepository->count();
     }
 
-    public function refresh(int $id, Comment $comment): void
+    public function edit(Comment $comment, CommentPublicationRequest $request): News
     {
-        $oldComment = $this->entityManager->getRepository(Comment::class)->find($id);
+        $comment->setAuthor($request->getAuthor());
+        $comment->setText($request->getText());
 
-        $oldComment->setAuthor($comment->getAuthor());
-        $oldComment->setText($comment->getText());
-        $this->entityManager->flush();
+        $this->commentRepository->edit();
+
+        return $comment->getNews();
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Comment;
+use App\Entity\News;
 use App\Manager\CommentManager;
 use App\Request\CommentPublicationRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,48 +22,31 @@ final readonly class CommentCrudController
     ) {
     }
 
-    public function create(CommentPublicationRequest $request): RedirectResponse
+    public function create(News $news, CommentPublicationRequest $request): RedirectResponse
     {
-        $news = $this->commentManager->findNewsById($request->getNewsId());
+        $this->commentManager->create($news, $request);
 
-        if (null !== $news) {
-            $comment = $request->getComment()->setNews($news);
-            $this->commentManager->add($comment);
-
-            return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
-        }
-
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(Comment $comment): RedirectResponse
     {
-        $comment = $this->commentManager->findById($id);
+        $news = $this->commentManager->remove($comment);
 
-        if (null !== $comment) {
-            $news = $comment->getNews();
-            $this->commentManager->remove($id);
-
-            return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
-        }
-
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_all'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
     }
 
-    public function edit(int $id): Response
+    public function createEditForm(Comment $comment): Response
     {
-        $comment = $this->commentManager->findById($id);
-
-        return new Response($this->twig->render('admin/news/editComment.html.twig', [
+        return new Response($this->twig->render('/admin/news/editFormComment.html.twig', [
             'comment' => $comment,
         ]));
     }
 
-    public function update(int $id, CommentPublicationRequest $request): RedirectResponse
+    public function edit(Comment $comment, CommentPublicationRequest $request): RedirectResponse
     {
-        $news = $request->getNewsId();
-        $this->commentManager->refresh($id, $request->getComment());
+        $news = $this->commentManager->edit($comment, $request);
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news]));
+        return new RedirectResponse($this->urlGenerator->generate('admin_news_show', ['id' => $news->getId()]));
     }
 }

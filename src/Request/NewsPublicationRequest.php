@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Request;
 
-use App\Entity\News;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,20 +27,13 @@ final class NewsPublicationRequest implements RequestInterface
     )]
     private string $content;
 
-    #[Assert\Valid(groups: ['registration'])]
-    private News $news;
-
     public function __construct(Request $request)
     {
         $data = $request->request->all();
 
-        $this->news = new News();
-        $this->title = trim((string) $data['title']);
-        $this->summary = trim((string) $data['summary']);
-        $this->content = trim((string) $data['content']);
-        $this->news->setTitle($this->title);
-        $this->news->setSummary($this->summary);
-        $this->news->setContent($this->content);
+        $this->title = $data['title'] ?? '';
+        $this->summary = $data['summary'] ?? '';
+        $this->content = $data['content'] ?? '';
     }
 
     public function getTitle(): string
@@ -57,10 +49,5 @@ final class NewsPublicationRequest implements RequestInterface
     public function getContent(): string
     {
         return $this->content;
-    }
-
-    public function getNews(): News
-    {
-        return $this->news;
     }
 }

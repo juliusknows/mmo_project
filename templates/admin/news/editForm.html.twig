@@ -1,13 +1,13 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Добавить новость{% endblock %}
+{% block title %}Редактировать новость{% endblock %}
 
 
 {% block body %}
     <div class="container my-4">
         <h2 class="mb-4">Редактировать новость</h2>
 
-        <form method="post" action="{{ path('admin_news_update', {'id': news.id}) }}" class="needs-validation" novalidate>
+        <form method="post" action="{{ path('admin_news_edit', {'id': news.id}) }}" class="needs-validation" novalidate>
             <input type="hidden" name="_method" value="PUT">
             <div class="mb-3">
                 <label for="title" class="form-label">Заголовок:</label>
@@ -51,7 +51,7 @@
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
-                <a href="{{ path('admin_news_all') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
+                <a href="{{ path('admin_news_list') }}" class="btn btn-secondary btn-lg ms-md-2">Отмена</a>
             </div>
         </form>
     </div>

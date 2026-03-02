@@ -7,7 +7,7 @@
     <div class="container my-4">
         <h1 class="mb-4">Все новости</h1>
 
-        <a href="{{ path('admin_news_new') }}" class="btn btn-primary mb-3">Добавить новость</a>
+        <a href="{{ path('admin_news_creat_form') }}" class="btn btn-primary mb-3">Добавить новость</a>
 
         {% if allNews is empty %}
             <div class="alert alert-info">
@@ -32,7 +32,7 @@
                             <td>{{ news.content|e }}</td>
                             <td class="text-end">
                                 <div class="btn-group" role="group">
-                                    <a href="{{ path('admin_news_edit', {'id': news.id}) }}"
+                                    <a href="{{ path('admin_news_edit_form', {'id': news.id}) }}"
                                        class="btn btn-sm btn-outline-primary">Редактировать</a>
                                     <a href="{{ path('admin_news_show', {'id': news.id}) }}"
                                        class="btn btn-sm btn-outline-success">Посмотреть</a>
